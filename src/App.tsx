@@ -1,15 +1,21 @@
-import { Navigation } from "@/components/Navigation";
-import { Outlet } from "react-router";
+import { ActiveChallengePage } from "@/features/active-challenge";
+import AppLayout from "@/layouts/app-layout";
+import { HomePage, AboutPage, HistoryPage } from "@/pages";
+import { createBrowserRouter, RouterProvider } from "react-router";
 
-function App() {
-	return (
-		<div className="min-h-dvh bg-background">
-			<Navigation />
-			<div className="animate-fade-in sm:pt-6 pt-4 sm:pb-0 pb-20">
-				<Outlet />
-			</div>
-		</div>
-	);
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <AppLayout />,
+		children: [
+			{ index: true, element: <HomePage /> },
+			{ path: "active", element: <ActiveChallengePage /> },
+			{ path: "history", element: <HistoryPage /> },
+			{ path: "about", element: <AboutPage /> },
+		],
+	},
+]);
+
+export default function App() {
+	return <RouterProvider router={router} />;
 }
-
-export default App;
