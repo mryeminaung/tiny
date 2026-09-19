@@ -1,5 +1,5 @@
-import { Navigation } from "@/components/navigation";
 import { BackgroundEffects } from "@/components/background-effects";
+import { Navigation } from "@/components/navigation";
 import { useAppStore } from "@/stores/use-app-store";
 import { motion } from "motion/react";
 import { useEffect } from "react";
