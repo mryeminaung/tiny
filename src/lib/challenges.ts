@@ -6,10 +6,11 @@ import {
   UtensilsCrossed,
   Gamepad2,
   TreePine,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
 
-export type Category = "create" | "code" | "think" | "friends" | "eat" | "play" | "outside";
+export type Category = "create" | "code" | "think" | "friends" | "eat" | "play" | "outside" | "random";
 
 export interface Challenge {
   id: string;
@@ -35,6 +36,7 @@ export const categories: CategoryMeta[] = [
   { id: "eat", label: "Eat", icon: UtensilsCrossed, color: "text-emerald-500" },
   { id: "play", label: "Play", icon: Gamepad2, color: "text-blue-500" },
   { id: "outside", label: "Outside", icon: TreePine, color: "text-lime-600" },
+  { id: "random", label: "Random", icon: Sparkles, color: "text-[var(--primary)]" },
 ];
 
 export const challenges: Challenge[] = [
@@ -110,6 +112,9 @@ export const challenges: Challenge[] = [
 ];
 
 export function getRandomChallenge(category?: Category | null): Challenge {
-  const pool = category ? challenges.filter((c) => c.category === category) : challenges;
+  if (!category || category === "random") {
+    return challenges[Math.floor(Math.random() * challenges.length)];
+  }
+  const pool = challenges.filter((c) => c.category === category);
   return pool[Math.floor(Math.random() * pool.length)];
 }

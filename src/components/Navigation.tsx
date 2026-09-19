@@ -1,68 +1,114 @@
-import { useStore, type Page } from "@/lib/store";
+import { NavLink } from "react-router";
+import { useStore } from "@/lib/store";
 import { cn } from "cn";
+import { Home, Clock, Info, Moon, Sun } from "lucide-react";
 
-const navLinks: { id: Page; label: string }[] = [
-  { id: "home", label: "Home" },
-  { id: "history", label: "History" },
-  { id: "about", label: "About" },
+const navLinks = [
+  { to: "/", label: "Home", icon: Home },
+  { to: "/history", label: "History", icon: Clock },
+  { to: "/about", label: "About", icon: Info },
 ];
 
-export function Navigation() {
-  const page = useStore((s) => s.page);
-  const setPage = useStore((s) => s.setPage);
+function ThemeToggle({ className }: { className?: string }) {
+  const theme = useStore((s) => s.theme);
+  const toggleTheme = useStore((s) => s.toggleTheme);
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--background)]/80 backdrop-blur-xl border-b border-[var(--border)]">
-      <nav className="mx-auto max-w-3xl px-5 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <button
-          onClick={() => setPage("home")}
-          className="flex items-center gap-2 group cursor-pointer"
-        >
-          <span className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-            Tiny
-          </span>
-          <span className="text-[10px] font-medium text-[var(--muted-foreground)] bg-[var(--secondary)] px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-            ✨
-          </span>
-        </button>
+    <button
+      onClick={toggleTheme}
+      className={cn(
+        "relative size-9 flex items-center justify-center rounded-full transition-all duration-200 cursor-pointer",
+        "text-muted-foreground hover:text-foreground hover:bg-secondary",
+        className
+      )}
+      aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+    >
+      <Sun
+        className={cn(
+          "size-[18px] absolute transition-all duration-300",
+          theme === "dark"
+            ? "rotate-0 scale-100 opacity-100"
+            : "rotate-90 scale-0 opacity-0"
+        )}
+      />
+      <Moon
+        className={cn(
+          "size-[18px] absolute transition-all duration-300",
+          theme === "light"
+            ? "rotate-0 scale-100 opacity-100"
+            : "-rotate-90 scale-0 opacity-0"
+        )}
+      />
+    </button>
+  );
+}
 
-        {/* Desktop nav */}
-        <div className="hidden sm:flex items-center gap-1">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => setPage(link.id)}
-              className={cn(
-                "px-4 py-2 text-sm font-medium rounded-full transition-all duration-200 cursor-pointer",
-                page === link.id
-                  ? "bg-[var(--foreground)] text-[var(--background)]"
-                  : "text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--secondary)]"
-              )}
-            >
-              {link.label}
-            </button>
-          ))}
-        </div>
+export function Navigation() {
+  return (
+    <>
+      {/* Desktop / Tablet top nav */}
+      <header className="hidden sm:block sticky top-4 z-50 mx-auto max-w-5xl px-6">
+        <nav className="h-16 flex items-center justify-between px-5 bg-background/80 backdrop-blur-xl border border-border rounded-2xl shadow-sm overflow-hidden">
+          <NavLink to="/" className="flex items-center">
+            <img src="/logo.png" alt="Tiny" className="h-20 w-auto -my-3" />
+          </NavLink>
 
-        {/* Mobile nav */}
-        <div className="flex sm:hidden items-center gap-0.5">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => setPage(link.id)}
-              className={cn(
-                "px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer",
-                page === link.id
-                  ? "bg-[var(--foreground)] text-[var(--background)]"
-                  : "text-[var(--muted-foreground)]"
-              )}
-            >
-              {link.label}
-            </button>
-          ))}
+          <div className="flex items-center gap-1">
+            {navLinks.map((link) => (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  cn(
+                    "px-4 py-2 text-sm font-medium rounded-full transition-all duration-200",
+                    isActive
+                      ? "bg-foreground text-background"
+                      : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                  )
+                }
+              >
+                {link.label}
+              </NavLink>
+            ))}
+            <ThemeToggle className="ml-1" />
+          </div>
+        </nav>
+      </header>
+
+      {/* Mobile bottom tab bar */}
+      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-background/90 backdrop-blur-xl border-t border-border safe-area-pb">
+        <div className="flex items-center justify-between h-16 px-2">
+          {navLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <NavLink
+                key={link.to}
+                to={link.to}
+                className={({ isActive }) =>
+                  cn(
+                    "flex flex-col items-center gap-1 px-4 py-1.5 rounded-xl transition-all duration-200 min-w-[56px]",
+                    isActive ? "text-foreground" : "text-muted-foreground"
+                  )
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <Icon
+                      className={cn(
+                        "size-5 transition-all duration-200",
+                        isActive && "scale-110"
+                      )}
+                      strokeWidth={isActive ? 2.5 : 1.8}
+                    />
+                    <span className="text-[10px] font-semibold">{link.label}</span>
+                  </>
+                )}
+              </NavLink>
+            );
+          })}
+          <ThemeToggle />
         </div>
       </nav>
-    </header>
+    </>
   );
 }

@@ -7,75 +7,66 @@ const categoryMeta: Record<
   {
     emoji: string;
     description: string;
-    bg: string;
-    hoverBg: string;
+    lightBg: string;
+    lightHover: string;
     activeBg: string;
-    activeBorder: string;
-    iconColor: string;
   }
 > = {
   create: {
     emoji: "🎨",
-    description: "Make something",
-    bg: "bg-rose-50",
-    hoverBg: "hover:bg-rose-100",
-    activeBg: "bg-rose-500",
-    activeBorder: "border-rose-500",
-    iconColor: "text-rose-500",
+    description: "Get crafty",
+    lightBg: "bg-rose-50 dark:bg-rose-950/40",
+    lightHover: "hover:bg-rose-100 dark:hover:bg-rose-900/50",
+    activeBg: "bg-rose-500 dark:bg-rose-500",
   },
   code: {
     emoji: "💻",
-    description: "Build & hack",
-    bg: "bg-sky-50",
-    hoverBg: "hover:bg-sky-100",
-    activeBg: "bg-sky-500",
-    activeBorder: "border-sky-500",
-    iconColor: "text-sky-500",
+    description: "Hack stuff",
+    lightBg: "bg-sky-50 dark:bg-sky-950/40",
+    lightHover: "hover:bg-sky-100 dark:hover:bg-sky-900/50",
+    activeBg: "bg-sky-500 dark:bg-sky-500",
   },
   think: {
     emoji: "🧠",
-    description: "Challenge your mind",
-    bg: "bg-violet-50",
-    hoverBg: "hover:bg-violet-100",
-    activeBg: "bg-violet-500",
-    activeBorder: "border-violet-500",
-    iconColor: "text-violet-500",
+    description: "Brain time",
+    lightBg: "bg-violet-50 dark:bg-violet-950/40",
+    lightHover: "hover:bg-violet-100 dark:hover:bg-violet-900/50",
+    activeBg: "bg-violet-500 dark:bg-violet-500",
   },
   friends: {
     emoji: "👥",
-    description: "Connect with people",
-    bg: "bg-amber-50",
-    hoverBg: "hover:bg-amber-100",
-    activeBg: "bg-amber-500",
-    activeBorder: "border-amber-500",
-    iconColor: "text-amber-500",
+    description: "Bug someone",
+    lightBg: "bg-amber-50 dark:bg-amber-950/40",
+    lightHover: "hover:bg-amber-100 dark:hover:bg-amber-900/50",
+    activeBg: "bg-amber-500 dark:bg-amber-500",
   },
   eat: {
     emoji: "🍕",
-    description: "Cook & taste",
-    bg: "bg-emerald-50",
-    hoverBg: "hover:bg-emerald-100",
-    activeBg: "bg-emerald-500",
-    activeBorder: "border-emerald-500",
-    iconColor: "text-emerald-500",
+    description: "Nom nom",
+    lightBg: "bg-emerald-50 dark:bg-emerald-950/40",
+    lightHover: "hover:bg-emerald-100 dark:hover:bg-emerald-900/50",
+    activeBg: "bg-emerald-500 dark:bg-emerald-500",
   },
   play: {
     emoji: "🎮",
-    description: "Have fun",
-    bg: "bg-blue-50",
-    hoverBg: "hover:bg-blue-100",
-    activeBg: "bg-blue-500",
-    activeBorder: "border-blue-500",
-    iconColor: "text-blue-500",
+    description: "Game on",
+    lightBg: "bg-blue-50 dark:bg-blue-950/40",
+    lightHover: "hover:bg-blue-100 dark:hover:bg-blue-900/50",
+    activeBg: "bg-blue-500 dark:bg-blue-500",
   },
   outside: {
     emoji: "🌿",
-    description: "Explore the world",
-    bg: "bg-lime-50",
-    hoverBg: "hover:bg-lime-100",
-    activeBg: "bg-lime-600",
-    activeBorder: "border-lime-600",
-    iconColor: "text-lime-600",
+    description: "Touch grass",
+    lightBg: "bg-lime-50 dark:bg-lime-950/40",
+    lightHover: "hover:bg-lime-100 dark:hover:bg-lime-900/50",
+    activeBg: "bg-lime-600 dark:bg-lime-600",
+  },
+  random: {
+    emoji: "🎲",
+    description: "Yolo mode",
+    lightBg: "bg-violet-50 dark:bg-violet-950/40",
+    lightHover: "hover:bg-violet-100 dark:hover:bg-violet-900/50",
+    activeBg: "bg-primary dark:bg-primary",
   },
 };
 
@@ -84,7 +75,7 @@ export function CategoryGrid() {
   const setCategory = useStore((s) => s.setCategory);
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 stagger-children">
+    <div className="grid grid-cols-4 gap-2.5 sm:gap-3 stagger-children">
       {categories.map((cat) => {
         const isActive = currentCategory === cat.id;
         const meta = categoryMeta[cat.id];
@@ -94,42 +85,40 @@ export function CategoryGrid() {
             key={cat.id}
             onClick={() => setCategory(cat.id as Category)}
             className={cn(
-              "group relative flex flex-col items-start gap-2 p-4 sm:p-5 rounded-2xl border-2 transition-all duration-200 cursor-pointer text-left",
-              "hover:scale-[1.03] hover:-translate-y-0.5 active:scale-[0.97]",
+              "group relative flex flex-col items-start gap-1.5 sm:gap-2 p-3.5 sm:p-5 rounded-2xl border-2 transition-all duration-200 cursor-pointer text-left",
+              "hover:scale-[1.04] hover:-translate-y-1 active:scale-[0.96]",
               isActive
                 ? cn(meta.activeBg, "border-transparent text-white shadow-lg")
                 : cn(
-                    meta.bg,
-                    meta.hoverBg,
+                    meta.lightBg,
+                    meta.lightHover,
                     "border-transparent",
                     "hover:shadow-md"
                   )
             )}
           >
-            {/* Emoji */}
             <span
               className={cn(
-                "text-2xl sm:text-3xl leading-none transition-transform duration-200",
-                !isActive && "group-hover:scale-110"
+                "text-xl sm:text-3xl leading-none transition-transform duration-200",
+                !isActive && "group-hover:scale-125 group-hover:rotate-6"
               )}
             >
               {meta.emoji}
             </span>
 
-            {/* Label */}
-            <div className="space-y-0.5">
+            <div className="space-y-0">
               <span
                 className={cn(
-                  "text-sm font-bold block",
-                  isActive ? "text-white" : "text-[var(--foreground)]"
+                  "text-xs sm:text-sm font-bold block leading-tight",
+                  isActive ? "text-white" : "text-foreground"
                 )}
               >
                 {cat.label}
               </span>
               <span
                 className={cn(
-                  "text-xs block",
-                  isActive ? "text-white/70" : "text-[var(--muted-foreground)]"
+                  "text-[10px] sm:text-xs block leading-tight",
+                  isActive ? "text-white/70" : "text-muted-foreground"
                 )}
               >
                 {meta.description}

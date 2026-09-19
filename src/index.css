@@ -3,10 +3,17 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@font-face {
+  font-family: "BricolageGrotesque";
+  src: url("@/assets/fonts/BricolageGrotesque.ttf") format("truetype");
+  font-weight: 200 800;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "BricolageGrotesque", ui-sans-serif, system-ui, -apple-system, sans-serif;
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -60,9 +67,34 @@
   --ring: #7C5CFC;
 }
 
+.dark {
+  --background: #141210;
+  --foreground: #F0EDE8;
+  --card: #1E1C19;
+  --card-foreground: #F0EDE8;
+  --popover: #1E1C19;
+  --popover-foreground: #F0EDE8;
+  --primary: #A78BFA;
+  --primary-foreground: #141210;
+  --secondary: #262320;
+  --secondary-foreground: #F0EDE8;
+  --muted: #262320;
+  --muted-foreground: #8A857F;
+  --accent: #A78BFA;
+  --accent-foreground: #141210;
+  --destructive: #EF4444;
+  --destructive-foreground: #FFFFFF;
+  --border: #332F2B;
+  --input: #332F2B;
+  --ring: #A78BFA;
+}
+
 @layer base {
   * {
     @apply border-border;
+  }
+  html {
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   body {
     @apply bg-background text-foreground;
@@ -79,10 +111,13 @@ body::before {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 200px 200px;
+}
+.dark body::before {
+  opacity: 0.04;
 }
 
 /* ── Animations ── */
@@ -196,8 +231,13 @@ body::before {
 /* ── Utility ── */
 .text-balance { text-wrap: balance; }
 
+/* Safe area for mobile bottom bar */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #D4CFC8; border-radius: 99px; }
-.dark ::-webkit-scrollbar-thumb { background: #3A3632; }
+.dark ::-webkit-scrollbar-thumb { background: #332F2B; }

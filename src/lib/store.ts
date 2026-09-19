@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 import type { Category, Challenge } from "./challenges";
 import { getRandomChallenge } from "./challenges";
 
-export type Page = "home" | "history" | "about";
+export type Theme = "light" | "dark";
 
 export interface HistoryEntry {
   challenge: Challenge;
@@ -12,9 +12,9 @@ export interface HistoryEntry {
 }
 
 interface AppState {
-  // Navigation
-  page: Page;
-  setPage: (page: Page) => void;
+  // Theme
+  theme: Theme;
+  toggleTheme: () => void;
 
   // Challenge state
   currentCategory: Category | null;
@@ -29,15 +29,23 @@ interface AppState {
   clearHistory: () => void;
 }
 
+function applyTheme(theme: Theme) {
+  document.documentElement.classList.toggle("dark", theme === "dark");
+}
+
 export const useStore = create<AppState>()(
   persist(
     (set, get) => ({
-      page: "home",
+      theme: "light" as Theme,
       currentCategory: null,
       currentChallenge: null,
       history: [],
 
-      setPage: (page) => set({ page }),
+      toggleTheme: () => {
+        const next = get().theme === "light" ? "dark" : "light";
+        applyTheme(next);
+        set({ theme: next });
+      },
 
       setCategory: (category) => {
         set({ currentCategory: category });
@@ -63,7 +71,6 @@ export const useStore = create<AppState>()(
 
         set({ history: [entry, ...history] });
 
-        // Generate next challenge
         const next = getRandomChallenge(get().currentCategory);
         set({ currentChallenge: next });
       },
@@ -83,7 +90,12 @@ export const useStore = create<AppState>()(
     }),
     {
       name: "tiny-history",
-      partialize: (state) => ({ history: state.history }),
+      partialize: (state) => ({ history: state.history, theme: state.theme }),
+      onRehydrate: () => {
+        return (state) => {
+          if (state) applyTheme(state.theme);
+        };
+      },
     }
   )
 );
