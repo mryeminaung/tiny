@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { categories } from "@/lib/challenges";
 import { categoryGradients, difficultyMeta } from "@/lib/constants";
 import { useAppStore } from "@/stores/use-app-store";
-import { cn } from "cn";
 import { ArrowLeft, Check, Clock, Pause, Play, Timer } from "lucide-react";
 import { motion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
@@ -216,16 +215,22 @@ export function ActiveChallengePage() {
 									{cat?.icon && <cat.icon className="size-3" />}
 									{cat?.label}
 								</Badge>
-								<Badge variant="secondary" className="gap-1.5">
+								<Badge
+									variant="secondary"
+									className="gap-1.5">
 									{difficultyMeta[currentChallenge.difficulty - 1].emoji}
 									{difficultyMeta[currentChallenge.difficulty - 1].label}
 								</Badge>
-								<Badge variant="secondary" className="gap-1.5">
+								<Badge
+									variant="secondary"
+									className="gap-1.5">
 									<Timer className="size-3" />
 									{currentChallenge.timeEstimate}
 								</Badge>
 								{elapsed > 0 && !isComplete && (
-									<Badge variant="secondary" className="gap-1.5">
+									<Badge
+										variant="secondary"
+										className="gap-1.5">
 										<Clock className="size-3" />
 										{formatTime(elapsed)} elapsed
 									</Badge>
