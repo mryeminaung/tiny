@@ -1,9 +1,8 @@
 import { ConfettiExplosion } from "@/components/confetti";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { categories } from "@/lib/challenges";
 import { categoryGradients, difficultyMeta } from "@/lib/constants";
 import { useAppStore } from "@/stores/use-app-store";
-import { cn } from "cn";
 import { Check, Clock, Rocket, RotateCw } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
@@ -51,7 +50,7 @@ export function ChallengeCard() {
 
 	return (
 		<div
-			className="relative max-w-xl"
+			className="relative w-full"
 			data-challenge-area>
 			<AnimatePresence mode="wait">
 				<motion.div
@@ -62,41 +61,30 @@ export function ChallengeCard() {
 					transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}>
 					{showConfetti && <ConfettiExplosion />}
 
-					{/* Glow */}
-					<div
-						className="absolute -inset-3 rounded-[2rem] opacity-15 blur-2xl -z-10 transition-all duration-700"
-						style={{ background: gradient }}
-					/>
-
 					{/* Card */}
-					<div className="relative bg-card rounded-2xl border border-border shadow-sm overflow-hidden">
-						{/* Top gradient bar */}
+					<div className="relative bg-card border border-border rounded-3xl overflow-hidden shadow-md">
+						{/* Gradient accent bar */}
 						<div
 							className="h-1 w-full"
 							style={{ background: gradient }}
 						/>
 
 						<div className="p-5 sm:p-6 space-y-4">
-							{/* Badges row */}
+							{/* Badges */}
 							<div className="flex items-center gap-2 flex-wrap">
-								<Badge
-									variant="default"
-									className="gap-1 font-bold"
+								<span
+									className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold text-white backdrop-blur-sm"
 									style={{ background: gradient }}>
 									{cat?.icon && <cat.icon className="size-3" />}
 									{cat?.label}
-								</Badge>
-								<Badge
-									variant="secondary"
-									className="gap-1">
+								</span>
+								<span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-muted border border-border text-foreground/80">
 									{diff.emoji} {diff.label}
-								</Badge>
-								<Badge
-									variant="secondary"
-									className="gap-1">
+								</span>
+								<span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-muted border border-border text-foreground/80">
 									<Clock className="size-3" />
 									{currentChallenge.timeEstimate}
-								</Badge>
+								</span>
 							</div>
 
 							{/* Title + Description */}
@@ -111,58 +99,37 @@ export function ChallengeCard() {
 
 							{/* Action buttons */}
 							<div className="flex gap-2.5 pt-1">
-								<button
+								<Button
+									variant="outline"
+									size="lg"
 									onClick={handleAnother}
 									disabled={isDone}
-									className={cn(
-										"flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl border border-border text-muted-foreground font-semibold text-sm",
-										"hover:bg-secondary hover:border-foreground/15 transition-all duration-200 cursor-pointer",
-										"hover:scale-[1.02] active:scale-[0.97]",
-										"disabled:opacity-40 disabled:cursor-not-allowed",
-									)}>
+									className="flex-1 hover:scale-[1.02] active:scale-[0.97]">
 									<RotateCw className="size-4" />
 									Skip
-								</button>
+								</Button>
 
-								<button
+								<Button
+									variant="default"
+									size="lg"
 									onClick={handleComplete}
 									disabled={isDone}
-									className={cn(
-										"flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-semibold text-sm text-white",
-										"transition-all duration-200 cursor-pointer",
-										"hover:scale-[1.03] active:scale-[0.97]",
-										"disabled:opacity-70 disabled:cursor-not-allowed",
-										isDone ? "bg-emerald-500" : "shadow-md hover:shadow-lg",
-									)}
-									style={!isDone ? { background: gradient } : undefined}>
-									{isDone ? (
-										<>
-											<Check className="size-4 animate-check-pop" />
-											Nice!
-										</>
-									) : (
-										<>
-											<Check className="size-4" />
-											Did it!
-										</>
-									)}
-								</button>
+									className="flex-1 hover:scale-[1.03] active:scale-[0.97]">
+									<Check className="size-4" />
+									{isDone ? "Nice!" : "Did it!"}
+								</Button>
 							</div>
 
 							{/* Accept Challenge */}
-							<button
+							<Button
+								variant="default"
+								size="lg"
 								onClick={handleAccept}
 								disabled={isDone}
-								className={cn(
-									"w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-sm text-white",
-									"transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg",
-									"hover:scale-[1.02] active:scale-[0.97]",
-									"disabled:opacity-50 disabled:cursor-not-allowed",
-								)}
-								style={!isDone ? { background: gradient } : undefined}>
+								className="w-full hover:scale-[1.02] active:scale-[0.97]">
 								<Rocket className="size-4" />
 								Accept Challenge
-							</button>
+							</Button>
 						</div>
 					</div>
 				</motion.div>

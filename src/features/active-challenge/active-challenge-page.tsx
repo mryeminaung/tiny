@@ -1,5 +1,6 @@
 import { ConfettiExplosion } from "@/components/confetti";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { categories } from "@/lib/challenges";
 import { categoryGradients, difficultyMeta } from "@/lib/constants";
 import { useAppStore } from "@/stores/use-app-store";
@@ -101,12 +102,12 @@ export function ActiveChallengePage() {
 				className="w-full max-w-4xl space-y-5">
 				{/* Header */}
 				<div className="flex items-center justify-between">
-					<button
-						onClick={handleBack}
-						className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
+					<Button
+						variant="ghost"
+						onClick={handleBack}>
 						<ArrowLeft className="size-5" />
-						<span className="text-sm font-medium">Back</span>
-					</button>
+						Back
+					</Button>
 					<div className="flex items-center gap-3">
 						<span className="text-xs text-muted-foreground font-medium">
 							{currentChallenge.timeEstimate}
@@ -167,13 +168,10 @@ export function ActiveChallengePage() {
 						{/* Controls */}
 						{!isComplete && (
 							<div className="flex items-center gap-2.5">
-								<button
+								<Button
+									variant="default"
 									onClick={handleToggleTimer}
-									className={cn(
-										"flex items-center justify-center gap-2 py-2.5 px-5 rounded-xl font-semibold text-sm text-white cursor-pointer",
-										"transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] shadow-lg hover:shadow-xl",
-									)}
-									style={{ background: gradient }}>
+									className="shadow-lg hover:shadow-xl hover:scale-[1.03] active:scale-[0.97]">
 									{timerRunning ? (
 										<>
 											<Pause className="size-4" /> Pause
@@ -183,18 +181,14 @@ export function ActiveChallengePage() {
 											<Play className="size-4" /> Resume
 										</>
 									)}
-								</button>
-								<button
+								</Button>
+								<Button
+									variant="outline"
 									onClick={handleDone}
-									className={cn(
-										"flex items-center justify-center gap-2 py-2.5 px-5 rounded-xl font-semibold text-sm",
-										"border-2 border-border text-muted-foreground",
-										"hover:bg-secondary hover:border-foreground/15 transition-all duration-200 cursor-pointer",
-										"hover:scale-[1.02] active:scale-[0.97]",
-									)}>
+									className="hover:scale-[1.02] active:scale-[0.97]">
 									<Check className="size-4" />
 									Done!
-								</button>
+								</Button>
 							</div>
 						)}
 					</motion.div>

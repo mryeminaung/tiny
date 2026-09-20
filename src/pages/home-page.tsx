@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { CategoryGrid, ChallengeCard, HeroSection } from "@/features/home";
 import { useAppStore } from "@/stores/use-app-store";
 import { Sparkles } from "lucide-react";
@@ -20,13 +21,14 @@ export function HomePage() {
 					initial={{ opacity: 0, y: 12 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}>
-					<button
+					<Button
 						onClick={() => generateForCategory("random")}
-						className="group relative inline-flex items-center gap-2 px-8 py-4 bg-foreground text-background font-bold text-base rounded-2xl hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 shadow-lg cursor-pointer overflow-hidden">
+						size="lg"
+						className="px-8 text-base font-bold shadow-lg hover:scale-[1.03] active:scale-[0.97] overflow-hidden">
 						<Sparkles className="size-5" />
 						Surprise me
 						<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-					</button>
+					</Button>
 					{history.length > 0 && (
 						<p className="text-xs text-muted-foreground">
 							{history.length} challenge{history.length !== 1 ? "s" : ""}{" "}
@@ -44,14 +46,6 @@ export function HomePage() {
 					<ChallengeCard />
 				</motion.div>
 			)}
-
-			<motion.footer
-				className="text-center text-xs text-muted-foreground pb-8"
-				initial={{ opacity: 0 }}
-				animate={{ opacity: 1 }}
-				transition={{ delay: 0.7, duration: 0.4 }}>
-				no login needed · no data collected · just vibes
-			</motion.footer>
 		</main>
 	);
 }

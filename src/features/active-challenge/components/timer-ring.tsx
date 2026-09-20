@@ -36,7 +36,7 @@ export function TimerRing({ progress, category }: TimerRingProps) {
 		<svg
 			width={size}
 			height={size}
-			className="drop-shadow-lg"
+			className="drop-shadow-lg w-full max-w-[220px] h-auto"
 			viewBox={`0 0 ${size} ${size}`}>
 			<defs>
 				<linearGradient

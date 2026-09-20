@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { getRandomChallenge } from "@/lib/challenges";
 import { useAppStore } from "@/stores/use-app-store";
 import { Flame, Sparkles, Trophy, Zap } from "lucide-react";
@@ -28,27 +29,27 @@ export function HeroSection() {
 					transition={{ duration: 0.5, delay: 0.1 }}>
 					<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
 						<Zap className="size-3.5 text-amber-500" />
-						{completedCount > 0 ? `${completedCount} done` : "ready to go"}
+						{completedCount > 0 ? `${completedCount} Done` : "Ready to go"}
 					</div>
 					<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
 						<Flame className="size-3.5 text-orange-500" />
-						56+ challenges
+						56+ Challenges
 					</div>
 					<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
-						<Trophy className="size-3.5 text-violet-500" />8 vibes
+						<Trophy className="size-3.5 text-violet-500" />8 Vibes
 					</div>
 				</motion.div>
 
 				{/* Main headline */}
 				<motion.div
-					space-y-3
+					className="space-y-3"
 					initial={{ opacity: 0, y: 20 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}>
 					<h1 className="text-balance">
 						<span className="block text-[3.5rem] sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[0.85]">
 							<span className="bg-gradient-to-br from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent">
-								what now
+								What now
 							</span>
 							<span className="text-primary">?</span>
 						</span>
@@ -61,7 +62,7 @@ export function HeroSection() {
 					initial={{ opacity: 0, y: 16 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}>
-					bored? we gotchu. tap below and we'll give you something fun to do.
+					Bored? we gotchu. tap below and we'll give you something fun to do.
 				</motion.p>
 
 				{/* CTA Button */}
@@ -70,12 +71,13 @@ export function HeroSection() {
 					initial={{ opacity: 0, y: 16 }}
 					animate={{ opacity: 1, y: 0 }}
 					transition={{ duration: 0.5, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}>
-					<button
+					<Button
 						onClick={handleGetSomething}
-						className="group relative inline-flex items-center gap-3 px-10 py-4.5 rounded-full bg-primary text-primary-foreground font-bold text-sm sm:text-base cursor-pointer transition-all duration-200 hover:scale-[1.04] active:scale-[0.97] shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30">
-						<Sparkles className="size-5 relative z-10" />
-						<span className="relative z-10">hit me ✨</span>
-					</button>
+						size="lg"
+						className="px-10 text-sm sm:text-base font-bold shadow-xl shadow-primary/25 hover:shadow-2xl hover:shadow-primary/30 hover:scale-[1.04] active:scale-[0.97]">
+						<Sparkles className="size-5" />
+						Hit me ✨
+					</Button>
 				</motion.div>
 
 				{/* Micro hint */}

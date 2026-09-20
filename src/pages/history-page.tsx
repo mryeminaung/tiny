@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import { categories, type Category } from "@/lib/challenges";
 import { categoryColor, categoryEmoji } from "@/lib/constants";
 import { useAppStore } from "@/stores/use-app-store";
@@ -46,13 +47,13 @@ function EmptyState() {
 					<span className="text-4xl">😴</span>
 				</div>
 				<motion.div
-					className="absolute -top-2 -right-2 size-6 rounded-full bg-amber-100 dark:bg-amber-900/50 flex items-center justify-center"
+					className="absolute -top-2 -right-2 size-6 rounded-full bg-amber-100 flex items-center justify-center"
 					animate={{ y: [0, -10, 0] }}
 					transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}>
 					<span className="text-xs">💤</span>
 				</motion.div>
 				<motion.div
-					className="absolute -bottom-1 -left-3 size-5 rounded-full bg-violet-100 dark:bg-violet-900/50 flex items-center justify-center"
+					className="absolute -bottom-1 -left-3 size-5 rounded-full bg-violet-100 flex items-center justify-center"
 					animate={{ y: [0, -7, 0] }}
 					transition={{
 						duration: 4,
@@ -71,7 +72,7 @@ function EmptyState() {
 
 			<Link
 				to="/"
-				className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-foreground text-background font-semibold text-sm hover:scale-[1.03] active:scale-[0.97] transition-transform duration-150 shadow-lg">
+				className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-sm hover:scale-[1.03] active:scale-[0.97] transition-transform duration-150 shadow-lg">
 				<Sparkles className="size-4" />
 				Let's go
 			</Link>
@@ -122,19 +123,19 @@ export function HistoryPage() {
 			<motion.div
 				className="grid grid-cols-3 gap-3"
 				{...fadeUp(0.05)}>
-				<div className="text-center p-4 bg-card rounded-2xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)]">
+				<div className="text-center p-4 bg-card rounded-2xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
 					<p className="text-2xl font-bold text-foreground">{completedCount}</p>
 					<p className="text-xs text-muted-foreground font-medium mt-0.5">
 						Done ✓
 					</p>
 				</div>
-				<div className="text-center p-4 bg-card rounded-2xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)]">
+				<div className="text-center p-4 bg-card rounded-2xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
 					<p className="text-2xl font-bold text-foreground">{history.length}</p>
 					<p className="text-xs text-muted-foreground font-medium mt-0.5">
 						Attempted
 					</p>
 				</div>
-				<div className="text-center p-4 bg-card rounded-2xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.2)]">
+				<div className="text-center p-4 bg-card rounded-2xl border border-border shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
 					<p className="text-2xl font-bold text-foreground">
 						{usedCategories.length}
 					</p>
@@ -152,30 +153,22 @@ export function HistoryPage() {
 					Filter by vibe
 				</div>
 				<div className="flex flex-wrap gap-2">
-					<button
-						onClick={() => setFilter("all")}
-						className={cn(
-							"px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border",
-							filter === "all"
-								? "bg-foreground text-background border-transparent"
-								: "bg-secondary text-muted-foreground border-transparent hover:bg-border",
-						)}>
+					<Button
+						size="sm"
+						variant={filter === "all" ? "default" : "secondary"}
+						onClick={() => setFilter("all")}>
 						All ✨
-					</button>
+					</Button>
 					{usedCategories.map((catId) => {
 						const cat = categories.find((c) => c.id === catId);
 						return (
-							<button
+							<Button
 								key={catId}
-								onClick={() => setFilter(catId)}
-								className={cn(
-									"px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border",
-									filter === catId
-										? "bg-foreground text-background border-transparent"
-										: "bg-secondary text-muted-foreground border-transparent hover:bg-border",
-								)}>
+								size="sm"
+								variant={filter === catId ? "default" : "secondary"}
+								onClick={() => setFilter(catId)}>
 								{categoryEmoji[catId]} {cat?.label}
-							</button>
+							</Button>
 						);
 					})}
 				</div>
@@ -196,13 +189,13 @@ export function HistoryPage() {
 							}}
 							className={cn(
 								"group flex items-center gap-4 p-4 bg-card rounded-2xl border border-border",
-								"shadow-[0_1px_3px_rgba(0,0,0,0.02)] dark:shadow-[0_1px_3px_rgba(0,0,0,0.15)]",
-								"hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_4px_12px_rgba(0,0,0,0.25)]",
+								"shadow-[0_1px_3px_rgba(0,0,0,0.02)]",
+								"hover:shadow-[0_4px_12px_rgba(0,0,0,0.06)]",
 								"transition-all duration-200 hover:-translate-y-0.5",
 							)}>
 							<button
 								onClick={() => toggleComplete(entry.challenge.id)}
-								className="shrink-0 cursor-pointer">
+								className="shrink-0 cursor-pointer rounded-full">
 								{entry.isCompleted ? (
 									<div className="size-8 rounded-full bg-emerald-500 flex items-center justify-center shadow-sm">
 										<Check
@@ -252,12 +245,13 @@ export function HistoryPage() {
 			<motion.div
 				className="flex justify-end pt-2"
 				{...fadeUp(0.2)}>
-				<button
-					onClick={clearHistory}
-					className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors duration-200 cursor-pointer">
+				<Button
+					variant="destructive"
+					size="sm"
+					onClick={clearHistory}>
 					<Trash2 className="size-3.5" />
 					Start over
-				</button>
+				</Button>
 			</motion.div>
 		</main>
 	);

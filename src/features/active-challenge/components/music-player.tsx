@@ -1,5 +1,5 @@
+import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/stores/use-app-store";
-import { cn } from "cn";
 import { CloudRain, Music, Zap } from "lucide-react";
 import { useCallback } from "react";
 import type { Station } from "@/lib/music";
@@ -44,19 +44,14 @@ export function MusicPlayer() {
 				{stations.map((s) => {
 					const isActive = musicStation === s.id && musicPlaying;
 					return (
-						<button
+						<Button
 							key={s.id}
+							variant={isActive ? "default" : "outline"}
 							onClick={() => handleStation(s.id)}
-							className={cn(
-								"flex flex-col items-center gap-1.5 py-3 px-2 rounded-xl font-medium text-xs cursor-pointer",
-								"transition-all duration-200 border-2",
-								isActive
-									? "border-primary bg-primary/10 text-primary scale-[1.03]"
-									: "border-border text-muted-foreground hover:bg-secondary hover:border-foreground/15",
-							)}>
+							className={`flex flex-col items-center gap-1.5 py-3 h-auto ${isActive ? "scale-[1.03]" : ""}`}>
 							<span className="text-lg">{s.emoji}</span>
 							{s.label}
-						</button>
+						</Button>
 					);
 				})}
 			</div>
