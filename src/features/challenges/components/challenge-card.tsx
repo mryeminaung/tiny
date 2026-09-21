@@ -39,9 +39,10 @@ export function ChallengeCard() {
 	}, [markComplete]);
 
 	const handleAccept = useCallback(() => {
+		if (!currentChallenge) return;
 		acceptChallenge();
-		navigate("/active");
-	}, [acceptChallenge, navigate]);
+		navigate(`/challenges/${currentChallenge.id}/active`);
+	}, [acceptChallenge, navigate, currentChallenge?.id]);
 
 	if (!currentChallenge) return null;
 

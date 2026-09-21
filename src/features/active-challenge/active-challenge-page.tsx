@@ -7,7 +7,7 @@ import { useAppStore } from "@/stores/use-app-store";
 import { ArrowLeft, Check, Clock, Pause, Play, Timer } from "lucide-react";
 import { motion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { MusicPlayer } from "./components/music-player";
 import { TimerRing } from "./components/timer-ring";
 
@@ -19,6 +19,7 @@ function formatTime(seconds: number): string {
 
 export function ActiveChallengePage() {
 	const navigate = useNavigate();
+	const { challengeId } = useParams<{ challengeId: string }>();
 	const currentChallenge = useAppStore((s) => s.currentChallenge);
 	const challengeStatus = useAppStore((s) => s.challengeStatus);
 	const timeRemaining = useAppStore((s) => s.timeRemaining);
@@ -31,12 +32,12 @@ export function ActiveChallengePage() {
 	const skipChallenge = useAppStore((s) => s.skipChallenge);
 	const [showConfetti, setShowConfetti] = useState(false);
 
-	// Redirect if no active challenge
+	// Redirect if no active challenge or ID mismatch
 	useEffect(() => {
-		if (!currentChallenge || challengeStatus !== "active") {
+		if (!currentChallenge || challengeStatus !== "active" || currentChallenge.id !== challengeId) {
 			navigate("/", { replace: true });
 		}
-	}, [currentChallenge, challengeStatus, navigate]);
+	}, [currentChallenge, challengeStatus, challengeId, navigate]);
 
 	// Timer tick
 	useEffect(() => {
@@ -56,14 +57,14 @@ export function ActiveChallengePage() {
 
 	const handleBack = useCallback(() => {
 		skipChallenge();
-		navigate("/");
+		navigate("/challenges");
 	}, [skipChallenge, navigate]);
 
 	const handleDone = useCallback(() => {
 		setShowConfetti(true);
 		setTimeout(() => {
 			completeChallenge();
-			navigate("/");
+			navigate("/challenges");
 		}, 1500);
 	}, [completeChallenge, navigate]);
 

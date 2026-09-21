@@ -1,9 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { categories, type Category } from "@/lib/challenges";
 import { categoryColor, categoryEmoji } from "@/lib/constants";
-import { useAppStore } from "@/stores/use-app-store";
 import { cn } from "@/lib/utils";
-import { Check, Clock, Filter, MessageSquare, Sparkles, Trash2, X } from "lucide-react";
+import { useAppStore } from "@/stores/use-app-store";
+import {
+	Check,
+	Clock,
+	Filter,
+	MessageSquare,
+	Sparkles,
+	Trash2,
+	X,
+} from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import { Link } from "react-router";
@@ -81,11 +89,9 @@ function EmptyState() {
 }
 
 function NoteEditor({
-	challengeId,
 	existingNote,
 	onSave,
 }: {
-	challengeId: string;
 	existingNote?: string;
 	onSave: (note: string) => void;
 }) {
@@ -106,7 +112,10 @@ function NoteEditor({
 					onClick={() => onSave(note)}
 					className="p-1.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary/80 transition-colors cursor-pointer"
 					title="Save note">
-					<Check className="size-3" strokeWidth={3} />
+					<Check
+						className="size-3"
+						strokeWidth={3}
+					/>
 				</button>
 				<button
 					onClick={() => onSave(existingNote || "")}
@@ -278,7 +287,9 @@ export function HistoryView() {
 
 								<div className="flex items-center gap-1.5 shrink-0">
 									<button
-										onClick={() => setEditingNote(isEditing ? null : entry.challenge.id)}
+										onClick={() =>
+											setEditingNote(isEditing ? null : entry.challenge.id)
+										}
 										className={cn(
 											"p-1.5 rounded-lg transition-colors cursor-pointer",
 											entry.note
@@ -312,7 +323,6 @@ export function HistoryView() {
 										exit={{ opacity: 0, height: 0 }}
 										className="ml-12 overflow-hidden">
 										<NoteEditor
-											challengeId={entry.challenge.id}
 											existingNote={entry.note}
 											onSave={(note) => {
 												addNote(entry.challenge.id, note);

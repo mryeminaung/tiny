@@ -69,7 +69,7 @@ export function FavoritesView() {
 
 	const handleStartChallenge = (fav: (typeof favorites)[0]) => {
 		startFavoriteChallenge(fav);
-		navigate("/active");
+		navigate(`/challenges/${fav.id}/active`);
 	};
 
 	return (
