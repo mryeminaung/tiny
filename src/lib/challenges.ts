@@ -111,10 +111,51 @@ export const challenges: Challenge[] = [
   { id: "o8", title: "Have a picnic (even solo)", description: "Pack a snack, find a patch of grass, and eat outside. Simple pleasures.", category: "outside", difficulty: 1, timeEstimate: "30 min" },
 ];
 
-export function getRandomChallenge(category?: Category | null): Challenge {
-  if (!category || category === "random") {
-    return challenges[Math.floor(Math.random() * challenges.length)];
+function matchesTime(c: Challenge, maxMins: number): boolean {
+  const match = c.timeEstimate.match(/(\d+)\s*(min|hour|hr)/i);
+  if (!match) return true;
+  const val = parseInt(match[1], 10);
+  const mins = /hour|hr/i.test(match[2]) ? val * 60 : val;
+  return mins <= maxMins;
+}
+
+function matchesDifficulty(c: Challenge, diff: number): boolean {
+  return c.difficulty === diff;
+}
+
+export function getRandomChallenge(
+  category?: Category | null,
+  difficultyFilter?: number | null,
+  maxTimeFilter?: number | null,
+): Challenge {
+  // Start with category pool
+  let pool = category && category !== "random"
+    ? challenges.filter((c) => c.category === category)
+    : [...challenges];
+
+  const hasDiff = difficultyFilter != null;
+  const hasTime = maxTimeFilter != null && maxTimeFilter > 0;
+
+  // Try both filters combined first
+  if (hasDiff && hasTime) {
+    const both = pool.filter(
+      (c) => matchesDifficulty(c, difficultyFilter!) && matchesTime(c, maxTimeFilter!),
+    );
+    if (both.length > 0) return both[Math.floor(Math.random() * both.length)];
   }
-  const pool = challenges.filter((c) => c.category === category);
+
+  // Try difficulty only
+  if (hasDiff) {
+    const diffOnly = pool.filter((c) => matchesDifficulty(c, difficultyFilter!));
+    if (diffOnly.length > 0) return diffOnly[Math.floor(Math.random() * diffOnly.length)];
+  }
+
+  // Try time only
+  if (hasTime) {
+    const timeOnly = pool.filter((c) => matchesTime(c, maxTimeFilter!));
+    if (timeOnly.length > 0) return timeOnly[Math.floor(Math.random() * timeOnly.length)];
+  }
+
+  // Fallback: category only (or all)
   return pool[Math.floor(Math.random() * pool.length)];
 }

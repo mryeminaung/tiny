@@ -1,6 +1,6 @@
 export function Footer() {
 	return (
-		<footer className="mx-auto max-w-5xl px-6 py-6 border-t border-border/50 bg-background/30 backdrop-blur-sm">
+		<footer className="mx-auto max-w-6xl px-6 py-6 border-t border-border/50 bg-background/30 backdrop-blur-sm">
 			<div className="flex items-center justify-between text-xs text-muted-foreground">
 				<span className="flex items-center gap-1.5">
 					©{new Date().getFullYear()} Made by{" "}

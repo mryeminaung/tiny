@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { categories } from "@/lib/challenges";
 import { categoryGradients, difficultyMeta } from "@/lib/constants";
 import { useAppStore } from "@/stores/use-app-store";
-import { Check, Clock, Rocket, RotateCw } from "lucide-react";
+import { Bookmark, Check, Clock, Rocket, RotateCw } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
@@ -13,6 +13,8 @@ export function ChallengeCard() {
 	const generateChallenge = useAppStore((s) => s.generateChallenge);
 	const markComplete = useAppStore((s) => s.markComplete);
 	const acceptChallenge = useAppStore((s) => s.acceptChallenge);
+	const favorites = useAppStore((s) => s.favorites);
+	const toggleFavorite = useAppStore((s) => s.toggleFavorite);
 	const navigate = useNavigate();
 	const [showConfetti, setShowConfetti] = useState(false);
 	const [isDone, setIsDone] = useState(false);
@@ -47,6 +49,7 @@ export function ChallengeCard() {
 	const gradient =
 		categoryGradients[currentChallenge.category] || categoryGradients.think;
 	const diff = difficultyMeta[currentChallenge.difficulty - 1];
+	const isFavorited = favorites.some((f) => f.id === currentChallenge.id);
 
 	return (
 		<div
@@ -85,6 +88,15 @@ export function ChallengeCard() {
 									<Clock className="size-3" />
 									{currentChallenge.timeEstimate}
 								</span>
+								<div className="flex-1" />
+								<button
+									onClick={() => toggleFavorite(currentChallenge)}
+									className="p-1.5 rounded-full hover:bg-muted transition-colors cursor-pointer"
+									title={isFavorited ? "Remove from favorites" : "Save for later"}>
+									<Bookmark
+										className={`size-4 transition-colors ${isFavorited ? "fill-primary text-primary" : "text-muted-foreground"}`}
+									/>
+								</button>
 							</div>
 
 							{/* Title + Description */}

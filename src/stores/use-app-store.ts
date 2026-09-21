@@ -11,6 +11,7 @@ export interface HistoryEntry {
 	challenge: Challenge;
 	completedAt: string;
 	isCompleted: boolean;
+	note?: string;
 }
 
 function parseTimeEstimate(str: string): number {
@@ -41,7 +42,18 @@ interface AppState {
 	musicPlaying: boolean;
 	musicStation: Station;
 
+	// Favorites
+	favorites: Challenge[];
+	toggleFavorite: (challenge: Challenge) => void;
+
+	// Filters
+	difficultyFilter: number | null;
+	maxTimeFilter: number | null;
+	setDifficultyFilter: (diff: number | null) => void;
+	setMaxTimeFilter: (minutes: number | null) => void;
+
 	// Actions
+	startFavoriteChallenge: (challenge: Challenge) => void;
 	setCategory: (category: Category) => void;
 	generateForCategory: (category: Category) => void;
 	generateChallenge: () => void;
@@ -53,6 +65,7 @@ interface AppState {
 	skipChallenge: () => void;
 	markComplete: () => void;
 	toggleComplete: (id: string) => void;
+	addNote: (challengeId: string, note: string) => void;
 	clearHistory: () => void;
 	setMusicStation: (station: Station) => void;
 	toggleMusic: () => void;
@@ -75,6 +88,9 @@ export const useAppStore = create<AppState>()(
 			totalDuration: 0,
 			musicPlaying: false,
 			musicStation: "none" as Station,
+			favorites: [],
+			difficultyFilter: null,
+			maxTimeFilter: null,
 
 			toggleTheme: () => {
 				const next = get().theme === "light" ? "dark" : "light";
@@ -82,20 +98,34 @@ export const useAppStore = create<AppState>()(
 				set({ theme: next });
 			},
 
+			startFavoriteChallenge: (challenge) => {
+				const seconds = parseTimeEstimate(challenge.timeEstimate);
+				set({
+					currentChallenge: challenge,
+					currentCategory: challenge.category,
+					challengeStatus: "active",
+					timeRemaining: seconds,
+					totalDuration: seconds,
+					timerRunning: true,
+				});
+			},
+
 			setCategory: (category) => {
+				const { difficultyFilter, maxTimeFilter } = get();
 				set({ currentCategory: category });
-				const challenge = getRandomChallenge(category);
+				const challenge = getRandomChallenge(category, difficultyFilter, maxTimeFilter);
 				set({ currentChallenge: challenge, challengeStatus: "idle" });
 			},
 
 			generateForCategory: (category) => {
-				const challenge = getRandomChallenge(category);
+				const { difficultyFilter, maxTimeFilter } = get();
+				const challenge = getRandomChallenge(category, difficultyFilter, maxTimeFilter);
 				set({ currentChallenge: challenge, challengeStatus: "idle", currentCategory: category === "random" ? null : category });
 			},
 
 			generateChallenge: () => {
-				const { currentCategory } = get();
-				const challenge = getRandomChallenge(currentCategory);
+				const { currentCategory, difficultyFilter, maxTimeFilter } = get();
+				const challenge = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter);
 				set({ currentChallenge: challenge, challengeStatus: "idle" });
 			},
 
@@ -151,14 +181,16 @@ export const useAppStore = create<AppState>()(
 
 				// Auto-next after confetti
 				setTimeout(() => {
-					const next = getRandomChallenge(get().currentCategory);
+					const { currentCategory, difficultyFilter, maxTimeFilter } = get();
+					const next = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter);
 					set({ currentChallenge: next, challengeStatus: "idle", timeRemaining: 0 });
 				}, 2500);
 			},
 
 			skipChallenge: () => {
 				musicEngine.stop();
-				const next = getRandomChallenge(get().currentCategory);
+				const { currentCategory, difficultyFilter, maxTimeFilter } = get();
+				const next = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter);
 				set({
 					currentChallenge: next,
 					challengeStatus: "idle",
@@ -181,7 +213,8 @@ export const useAppStore = create<AppState>()(
 
 				set({ history: [entry, ...history] });
 
-				const next = getRandomChallenge(get().currentCategory);
+				const { difficultyFilter, maxTimeFilter } = get();
+				const next = getRandomChallenge(get().currentCategory, difficultyFilter, maxTimeFilter);
 				set({ currentChallenge: next, challengeStatus: "idle" });
 			},
 
@@ -194,6 +227,45 @@ export const useAppStore = create<AppState>()(
 							: entry
 					),
 				});
+			},
+
+			addNote: (challengeId, note) => {
+				const { history } = get();
+				set({
+					history: history.map((entry) =>
+						entry.challenge.id === challengeId
+							? { ...entry, note }
+							: entry
+					),
+				});
+			},
+
+			toggleFavorite: (challenge) => {
+				const { favorites } = get();
+				const exists = favorites.some((f) => f.id === challenge.id);
+				set({
+					favorites: exists
+						? favorites.filter((f) => f.id !== challenge.id)
+						: [...favorites, challenge],
+				});
+			},
+
+			setDifficultyFilter: (diff) => {
+				set({ difficultyFilter: diff });
+				const { currentCategory, maxTimeFilter, currentChallenge } = get();
+				if (currentChallenge) {
+					const next = getRandomChallenge(currentCategory, diff, maxTimeFilter);
+					set({ currentChallenge: next });
+				}
+			},
+
+			setMaxTimeFilter: (minutes) => {
+				set({ maxTimeFilter: minutes });
+				const { currentCategory, difficultyFilter, currentChallenge } = get();
+				if (currentChallenge) {
+					const next = getRandomChallenge(currentCategory, difficultyFilter, minutes);
+					set({ currentChallenge: next });
+				}
 			},
 
 			clearHistory: () => set({ history: [] }),
@@ -222,7 +294,7 @@ export const useAppStore = create<AppState>()(
 		}),
 		{
 			name: "tiny-history",
-			partialize: (state) => ({ history: state.history, theme: state.theme }),
+			partialize: (state) => ({ history: state.history, theme: state.theme, favorites: state.favorites }),
 		}
 	)
 );

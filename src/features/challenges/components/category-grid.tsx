@@ -1,6 +1,6 @@
 import { categories, type Category } from "@/lib/challenges";
+import { cn } from "@/lib/utils";
 import { useAppStore } from "@/stores/use-app-store";
-import { cn } from "cn";
 import { motion } from "motion/react";
 
 const categoryColors: Record<string, { ring: string; icon: string }> = {
@@ -20,15 +20,6 @@ export function CategoryGrid() {
 
 	return (
 		<div className="space-y-5">
-			<div className="text-center space-y-1.5">
-				<h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground">
-					What are you in the mood for?
-				</h2>
-				<p className="text-xs text-muted-foreground">
-					Pick a vibe and let's go
-				</p>
-			</div>
-
 			<div className="grid grid-cols-4 gap-2.5 sm:gap-3">
 				{categories.map((cat, i) => {
 					const isActive = currentCategory === cat.id;

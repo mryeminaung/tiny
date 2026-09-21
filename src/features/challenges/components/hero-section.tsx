@@ -33,10 +33,10 @@ export function HeroSection() {
 					</div>
 					<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
 						<Flame className="size-3.5 text-orange-500" />
-						56+ Challenges
+						56 Challenges
 					</div>
 					<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
-						<Trophy className="size-3.5 text-violet-500" />8 Vibes
+						<Trophy className="size-3.5 text-violet-500" />7 Vibes
 					</div>
 				</motion.div>
 

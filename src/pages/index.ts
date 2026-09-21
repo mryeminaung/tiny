@@ -1,3 +1,4 @@
 export { HomePage } from "./home-page";
+export { ChallengesPage } from "./challenges-page";
 export { HistoryPage } from "./history-page";
-export { AboutPage } from "./about-page";
+export { FavoritesPage } from "./favorites-page";

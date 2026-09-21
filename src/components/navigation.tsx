@@ -1,18 +1,19 @@
-import { cn } from "cn";
-import { Clock, Home, Info } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Bookmark, Clock, Home, Sparkles } from "lucide-react";
 import { NavLink } from "react-router";
 
 const navLinks = [
 	{ to: "/", label: "Home", icon: Home },
+	{ to: "/challenges", label: "Challenges", icon: Sparkles },
+	{ to: "/favorites", label: "Saved", icon: Bookmark },
 	{ to: "/history", label: "History", icon: Clock },
-	{ to: "/about", label: "About", icon: Info },
 ];
 
 export function Navigation() {
 	return (
 		<>
 			{/* Desktop / Tablet top nav */}
-			<header className="hidden sm:block sticky top-4 z-50 mx-auto max-w-5xl px-6">
+			<header className="hidden sm:block sticky top-4 z-50 mx-auto max-w-6xl px-6">
 				<nav className="h-16 flex items-center justify-between px-5 bg-background/80 backdrop-blur-xl border border-border rounded-full shadow-sm overflow-hidden">
 					<NavLink
 						to="/"
@@ -20,7 +21,7 @@ export function Navigation() {
 						<img
 							src="/logo.png"
 							alt="Tiny"
-							className="h-20 w-auto -my-3"
+							className="h-24 w-auto -my-3"
 						/>
 					</NavLink>
 
@@ -33,7 +34,7 @@ export function Navigation() {
 									cn(
 										"px-4 py-2 text-sm font-medium rounded-full transition-all duration-200",
 										isActive
-											? "bg-foreground text-background"
+											? "bg-primary text-primary-foreground"
 											: "text-muted-foreground hover:text-foreground hover:bg-secondary",
 									)
 								}>
@@ -56,7 +57,7 @@ export function Navigation() {
 								className={({ isActive }) =>
 									cn(
 										"flex flex-col items-center gap-1 px-4 py-1.5 rounded-full transition-all duration-200 min-w-[56px]",
-										isActive ? "text-foreground" : "text-muted-foreground",
+										isActive ? "text-primary" : "text-muted-foreground",
 									)
 								}>
 								{({ isActive }) => (
