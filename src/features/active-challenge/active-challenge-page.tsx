@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { categories } from "@/lib/challenges";
 import { categoryGradients, difficultyMeta } from "@/lib/constants";
 import { useAppStore } from "@/stores/use-app-store";
+import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { ArrowLeft, Check, Clock, Pause, Play, Timer } from "lucide-react";
 import { motion } from "motion/react";
 import { useCallback, useEffect, useState } from "react";
@@ -76,6 +77,13 @@ export function ActiveChallengePage() {
 		}
 	}, [timerRunning, pauseTimer, resumeTimer]);
 
+	// Keyboard shortcuts
+	useKeyboardShortcuts({
+		onPauseResume: handleToggleTimer,
+		onDone: handleDone,
+		onBack: handleBack,
+	});
+
 	if (!currentChallenge) return null;
 
 	const cat = categories.find((c) => c.id === currentChallenge.category);
@@ -99,7 +107,7 @@ export function ActiveChallengePage() {
 				initial={{ opacity: 0, scale: 0.95 }}
 				animate={{ opacity: 1, scale: 1 }}
 				transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-				className="w-full max-w-4xl space-y-5">
+				className="w-full max-w-6xl space-y-5">
 				{/* Header */}
 				<div className="flex items-center justify-between">
 					<Button
@@ -190,6 +198,21 @@ export function ActiveChallengePage() {
 									Done!
 								</Button>
 							</div>
+						)}
+
+						{/* Keyboard shortcuts hint */}
+						{!isComplete && (
+							<motion.p
+								className="text-[10px] text-muted-foreground/50 font-medium text-center"
+								initial={{ opacity: 0 }}
+								animate={{ opacity: 1 }}
+								transition={{ delay: 1, duration: 0.5 }}>
+								<kbd className="px-1.5 py-0.5 rounded bg-muted border border-border text-[9px] font-mono">Space</kbd> pause
+								{" · "}
+								<kbd className="px-1.5 py-0.5 rounded bg-muted border border-border text-[9px] font-mono">Enter</kbd> done
+								{" · "}
+								<kbd className="px-1.5 py-0.5 rounded bg-muted border border-border text-[9px] font-mono">Esc</kbd> back
+							</motion.p>
 						)}
 					</motion.div>
 

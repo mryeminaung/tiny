@@ -53,6 +53,7 @@ interface AppState {
 	setMaxTimeFilter: (minutes: number | null) => void;
 
 	// Actions
+	startChallenge: (challenge: Challenge) => void;
 	startFavoriteChallenge: (challenge: Challenge) => void;
 	setCategory: (category: Category) => void;
 	generateForCategory: (category: Category) => void;
@@ -96,6 +97,18 @@ export const useAppStore = create<AppState>()(
 				const next = get().theme === "light" ? "dark" : "light";
 				applyTheme(next);
 				set({ theme: next });
+			},
+
+			startChallenge: (challenge) => {
+				const seconds = parseTimeEstimate(challenge.timeEstimate);
+				set({
+					currentChallenge: challenge,
+					currentCategory: challenge.category,
+					challengeStatus: "active",
+					timeRemaining: seconds,
+					totalDuration: seconds,
+					timerRunning: true,
+				});
 			},
 
 			startFavoriteChallenge: (challenge) => {

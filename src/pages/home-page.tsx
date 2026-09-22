@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DailyChallengeCard } from "@/features/daily-challenge";
 import { categories } from "@/lib/challenges";
 import { categoryDescriptions } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -110,6 +111,11 @@ export function HomePage() {
 						No signup · No tracking · Just vibes
 					</motion.p>
 				</div>
+			</section>
+
+			{/* ── Challenge of the Day ── */}
+			<section className="mb-20">
+				<DailyChallengeCard />
 			</section>
 
 			{/* ── How it works ── */}

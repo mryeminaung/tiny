@@ -1,14 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { useAppStore } from "@/stores/use-app-store";
-import { CloudRain, Music, Zap } from "lucide-react";
+import { Music, Volume2, VolumeX } from "lucide-react";
 import { useCallback } from "react";
-import type { Station } from "@/lib/music";
-
-const stations: { id: Station; label: string; emoji: string; icon: typeof Music }[] = [
-	{ id: "lofi", label: "Lo-fi", emoji: "🎵", icon: Music },
-	{ id: "rain", label: "Rain", emoji: "🌧️", icon: CloudRain },
-	{ id: "focus", label: "Focus", emoji: "🧠", icon: Zap },
-];
+import { musicEngine, stations, type Station } from "@/lib/music";
 
 export function MusicPlayer() {
 	const musicPlaying = useAppStore((s) => s.musicPlaying);
@@ -29,7 +23,11 @@ export function MusicPlayer() {
 	return (
 		<div className="bg-card rounded-2xl border border-border p-4 space-y-3 shadow-sm">
 			<div className="flex items-center gap-2">
-				<Music className="size-4 text-muted-foreground" />
+				{musicPlaying ? (
+					<Volume2 className="size-4 text-primary" />
+				) : (
+					<Music className="size-4 text-muted-foreground" />
+				)}
 				<span className="text-sm font-semibold text-foreground">
 					Ambient Music
 				</span>
@@ -40,20 +38,50 @@ export function MusicPlayer() {
 					</span>
 				)}
 			</div>
-			<div className="grid grid-cols-3 gap-2">
+
+			<div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
 				{stations.map((s) => {
 					const isActive = musicStation === s.id && musicPlaying;
 					return (
-						<Button
+						<button
 							key={s.id}
-							variant={isActive ? "default" : "outline"}
 							onClick={() => handleStation(s.id)}
-							className={`flex flex-col items-center gap-1.5 py-3 h-auto ${isActive ? "scale-[1.03]" : ""}`}>
-							<span className="text-lg">{s.emoji}</span>
-							{s.label}
-						</Button>
+							className={`group flex flex-col items-center gap-1.5 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+								isActive
+									? "bg-primary/10 border-primary/30 shadow-sm scale-[1.04]"
+									: "bg-muted/30 border-transparent hover:bg-muted/60 hover:border-border"
+							}`}>
+							<span className="text-xl leading-none">{s.emoji}</span>
+							<span
+								className={`text-[10px] font-semibold leading-tight ${
+									isActive ? "text-primary" : "text-muted-foreground"
+								}`}>
+								{s.label}
+							</span>
+						</button>
 					);
 				})}
+
+				{/* Stop button */}
+				<button
+					onClick={() => setMusicStation("none")}
+					className={`group flex flex-col items-center gap-1.5 p-2.5 rounded-xl border transition-all duration-200 cursor-pointer ${
+						!musicPlaying
+							? "bg-muted/30 border-transparent"
+							: "bg-destructive/10 border-destructive/20 hover:bg-destructive/20"
+					}`}>
+					<VolumeX
+						className={`size-5 ${
+							musicPlaying ? "text-destructive" : "text-muted-foreground"
+						}`}
+					/>
+					<span
+						className={`text-[10px] font-semibold leading-tight ${
+							musicPlaying ? "text-destructive" : "text-muted-foreground"
+						}`}>
+						Stop
+					</span>
+				</button>
 			</div>
 		</div>
 	);
