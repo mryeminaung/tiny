@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button";
+import { stations, type Station } from "@/lib/music";
 import { useAppStore } from "@/stores/use-app-store";
 import { Music, Volume2, VolumeX } from "lucide-react";
 import { useCallback } from "react";
-import { musicEngine, stations, type Station } from "@/lib/music";
 
 export function MusicPlayer() {
 	const musicPlaying = useAppStore((s) => s.musicPlaying);
