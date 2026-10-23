@@ -30,7 +30,7 @@ export function DailyChallengeCard() {
 			initial={{ opacity: 0, y: 16 }}
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ duration: 0.5, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
-			className="relative bg-card border border-border rounded-2xl overflow-hidden shadow-sm">
+			className="glass relative rounded-2xl overflow-hidden">
 			{/* Gradient accent bar */}
 			<div
 				className="h-1 w-full"

@@ -11,6 +11,8 @@ import {
 } from "lucide-react";
 
 export type Category = "create" | "code" | "think" | "friends" | "eat" | "play" | "outside" | "random";
+export type Mood = "creative" | "productive" | "relaxed" | "social" | "curious" | "playful";
+export type Energy = "low" | "medium" | "high";
 
 export interface Challenge {
   id: string;
@@ -19,6 +21,8 @@ export interface Challenge {
   category: Category;
   difficulty: 1 | 2 | 3;
   timeEstimate: string;
+  moods?: Mood[];
+  energy?: Energy;
 }
 
 export interface CategoryMeta {
@@ -123,39 +127,43 @@ function matchesDifficulty(c: Challenge, diff: number): boolean {
   return c.difficulty === diff;
 }
 
+const categoryMoods: Record<Exclude<Category, "random">, Mood[]> = {
+  create: ["creative", "curious"], code: ["productive", "curious"],
+  think: ["curious", "relaxed", "productive"], friends: ["social", "playful"],
+  eat: ["creative", "relaxed", "playful"], play: ["playful", "curious"],
+  outside: ["relaxed", "playful"],
+};
+
+function getMoods(c: Challenge): Mood[] {
+  return c.moods ?? (c.category === "random" ? [] : categoryMoods[c.category]);
+}
+
+function getEnergy(c: Challenge): Energy {
+  if (c.energy) return c.energy;
+  if (c.category === "outside" || c.category === "play") return c.difficulty === 3 ? "high" : "medium";
+  if (c.category === "friends") return "medium";
+  return c.difficulty === 1 ? "low" : c.difficulty === 2 ? "medium" : "high";
+}
+
 export function getRandomChallenge(
   category?: Category | null,
   difficultyFilter?: number | null,
   maxTimeFilter?: number | null,
+  moodFilter?: Mood | null,
+  energyFilter?: Energy | null,
 ): Challenge {
   // Start with category pool
   let pool = category && category !== "random"
     ? challenges.filter((c) => c.category === category)
     : [...challenges];
 
-  const hasDiff = difficultyFilter != null;
   const hasTime = maxTimeFilter != null && maxTimeFilter > 0;
-
-  // Try both filters combined first
-  if (hasDiff && hasTime) {
-    const both = pool.filter(
-      (c) => matchesDifficulty(c, difficultyFilter!) && matchesTime(c, maxTimeFilter!),
-    );
-    if (both.length > 0) return both[Math.floor(Math.random() * both.length)];
-  }
-
-  // Try difficulty only
-  if (hasDiff) {
-    const diffOnly = pool.filter((c) => matchesDifficulty(c, difficultyFilter!));
-    if (diffOnly.length > 0) return diffOnly[Math.floor(Math.random() * diffOnly.length)];
-  }
-
-  // Try time only
-  if (hasTime) {
-    const timeOnly = pool.filter((c) => matchesTime(c, maxTimeFilter!));
-    if (timeOnly.length > 0) return timeOnly[Math.floor(Math.random() * timeOnly.length)];
-  }
-
-  // Fallback: category only (or all)
-  return pool[Math.floor(Math.random() * pool.length)];
+  const filtered = pool.filter((c) =>
+    (difficultyFilter == null || matchesDifficulty(c, difficultyFilter)) &&
+    (!hasTime || matchesTime(c, maxTimeFilter!)) &&
+    (moodFilter == null || getMoods(c).includes(moodFilter)) &&
+    (energyFilter == null || getEnergy(c) === energyFilter),
+  );
+  const candidates = filtered.length > 0 ? filtered : pool;
+  return candidates[Math.floor(Math.random() * candidates.length)];
 }

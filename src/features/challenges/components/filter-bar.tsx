@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
+import type { Energy, Mood } from "@/lib/challenges";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/stores/use-app-store";
-import { Clock, SlidersHorizontal } from "lucide-react";
+import { Battery, Clock, SlidersHorizontal, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 
 const difficultyOptions = [
@@ -17,18 +18,37 @@ const timeOptions = [
 	{ value: null, label: "Any" },
 ];
 
+const moodOptions: { value: Mood; label: string }[] = [
+	{ value: "creative", label: "Creative" },
+	{ value: "productive", label: "Productive" },
+	{ value: "relaxed", label: "Relaxed" },
+	{ value: "social", label: "Social" },
+	{ value: "curious", label: "Curious" },
+	{ value: "playful", label: "Playful" },
+];
+
+const energyOptions: { value: Energy; label: string }[] = [
+	{ value: "low", label: "Low energy" },
+	{ value: "medium", label: "Medium energy" },
+	{ value: "high", label: "High energy" },
+];
+
 export function FilterBar() {
 	const difficultyFilter = useAppStore((s) => s.difficultyFilter);
 	const maxTimeFilter = useAppStore((s) => s.maxTimeFilter);
+	const moodFilter = useAppStore((s) => s.moodFilter);
+	const energyFilter = useAppStore((s) => s.energyFilter);
 	const setDifficultyFilter = useAppStore((s) => s.setDifficultyFilter);
 	const setMaxTimeFilter = useAppStore((s) => s.setMaxTimeFilter);
+	const setMoodFilter = useAppStore((s) => s.setMoodFilter);
+	const setEnergyFilter = useAppStore((s) => s.setEnergyFilter);
 
 	const handleDifficulty = (val: number) => {
 		// Toggle: click same = deselect, click different = select
 		setDifficultyFilter(difficultyFilter === val ? null : val);
 	};
 
-	const hasFilters = difficultyFilter !== null || maxTimeFilter !== null;
+	const hasFilters = difficultyFilter !== null || maxTimeFilter !== null || moodFilter !== null || energyFilter !== null;
 
 	return (
 		<motion.div
@@ -46,13 +66,30 @@ export function FilterBar() {
 						onClick={() => {
 							setDifficultyFilter(null);
 							setMaxTimeFilter(null);
+							setMoodFilter(null);
+							setEnergyFilter(null);
 						}}
-						className="text-primary hover:underline cursor-pointer ml-1">
+							className="text-primary hover:underline cursor-pointer ml-1"
+							aria-label="Clear all challenge filters">
 						Clear
 					</button>
 				)}
 			</div>
 
+			<div className="flex flex-wrap gap-2">
+				{moodOptions.map((opt) => (
+					<Button key={opt.value} size="sm" variant={moodFilter === opt.value ? "default" : "secondary"} aria-pressed={moodFilter === opt.value} onClick={() => setMoodFilter(moodFilter === opt.value ? null : opt.value)} className="gap-1.5 transition-all duration-200 hover:cursor-pointer">
+						<Sparkles className="size-3" />{opt.label}
+					</Button>
+				))}
+			</div>
+			<div className="flex flex-wrap gap-2">
+				{energyOptions.map((opt) => (
+					<Button key={opt.value} size="sm" variant={energyFilter === opt.value ? "default" : "secondary"} aria-pressed={energyFilter === opt.value} onClick={() => setEnergyFilter(energyFilter === opt.value ? null : opt.value)} className="gap-1.5 transition-all duration-200 hover:cursor-pointer">
+						<Battery className="size-3" />{opt.label}
+					</Button>
+				))}
+			</div>
 			<div className="flex flex-wrap gap-2">
 				{difficultyOptions.map((opt) => {
 					const isActive = difficultyFilter === opt.value;
@@ -61,6 +98,7 @@ export function FilterBar() {
 							key={opt.value}
 							size="sm"
 							variant={isActive ? "default" : "secondary"}
+							aria-pressed={isActive}
 							onClick={() => handleDifficulty(opt.value)}
 							className={cn(
 								"gap-1.5 transition-all duration-200 hover:cursor-pointer",
@@ -80,6 +118,7 @@ export function FilterBar() {
 							key={opt.label}
 							size="sm"
 							variant={isActive ? "default" : "secondary"}
+							aria-pressed={isActive}
 							onClick={() => setMaxTimeFilter(opt.value)}
 							className={cn(
 								"gap-1.5 transition-all duration-200 hover:cursor-pointer",

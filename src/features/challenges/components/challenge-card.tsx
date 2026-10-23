@@ -92,6 +92,8 @@ export function ChallengeCard() {
 								<div className="flex-1" />
 								<button
 									onClick={() => toggleFavorite(currentChallenge)}
+									aria-label={isFavorited ? "Remove challenge from favorites" : "Save challenge to favorites"}
+									aria-pressed={isFavorited}
 									className="p-1.5 rounded-full hover:bg-muted transition-colors cursor-pointer"
 									title={isFavorited ? "Remove from favorites" : "Save for later"}>
 									<Bookmark

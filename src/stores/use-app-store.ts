@@ -1,10 +1,10 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { Category, Challenge } from "@/lib/challenges";
+import type { Category, Challenge, Energy, Mood } from "@/lib/challenges";
 import { getRandomChallenge } from "@/lib/challenges";
 import { musicEngine, type Station } from "@/lib/music";
 
-export type Theme = "light" | "dark";
+export type Theme = "lavender" | "sunset" | "ocean" | "forest" | "dark";
 export type ChallengeStatus = "idle" | "active" | "completed";
 
 export interface HistoryEntry {
@@ -26,6 +26,7 @@ interface AppState {
 	// Theme
 	theme: Theme;
 	toggleTheme: () => void;
+	setTheme: (theme: Theme) => void;
 
 	// Challenge state
 	currentCategory: Category | null;
@@ -49,8 +50,12 @@ interface AppState {
 	// Filters
 	difficultyFilter: number | null;
 	maxTimeFilter: number | null;
+	moodFilter: Mood | null;
+	energyFilter: Energy | null;
 	setDifficultyFilter: (diff: number | null) => void;
 	setMaxTimeFilter: (minutes: number | null) => void;
+	setMoodFilter: (mood: Mood | null) => void;
+	setEnergyFilter: (energy: Energy | null) => void;
 
 	// Actions
 	startChallenge: (challenge: Challenge) => void;
@@ -72,14 +77,17 @@ interface AppState {
 	toggleMusic: () => void;
 }
 
-function applyTheme(theme: Theme) {
-	document.documentElement.classList.toggle("dark", theme === "dark");
+export function applyTheme(theme: Theme) {
+	const root = document.documentElement;
+	root.classList.remove("theme-lavender", "theme-sunset", "theme-ocean", "theme-forest", "theme-dark", "dark");
+	root.classList.add(`theme-${theme}`);
+	if (theme === "dark") root.classList.add("dark");
 }
 
 export const useAppStore = create<AppState>()(
 	persist(
 		(set, get) => ({
-			theme: "light" as Theme,
+			theme: "lavender" as Theme,
 			currentCategory: null,
 			currentChallenge: null,
 			challengeStatus: "idle" as ChallengeStatus,
@@ -92,11 +100,18 @@ export const useAppStore = create<AppState>()(
 			favorites: [],
 			difficultyFilter: null,
 			maxTimeFilter: null,
+			moodFilter: null,
+			energyFilter: null,
 
 			toggleTheme: () => {
-				const next = get().theme === "light" ? "dark" : "light";
+				const next = get().theme === "dark" ? "lavender" : "dark";
 				applyTheme(next);
 				set({ theme: next });
+			},
+
+			setTheme: (theme) => {
+				applyTheme(theme);
+				set({ theme });
 			},
 
 			startChallenge: (challenge) => {
@@ -124,21 +139,21 @@ export const useAppStore = create<AppState>()(
 			},
 
 			setCategory: (category) => {
-				const { difficultyFilter, maxTimeFilter } = get();
+				const { difficultyFilter, maxTimeFilter, moodFilter, energyFilter } = get();
 				set({ currentCategory: category });
-				const challenge = getRandomChallenge(category, difficultyFilter, maxTimeFilter);
+				const challenge = getRandomChallenge(category, difficultyFilter, maxTimeFilter, moodFilter, energyFilter);
 				set({ currentChallenge: challenge, challengeStatus: "idle" });
 			},
 
 			generateForCategory: (category) => {
-				const { difficultyFilter, maxTimeFilter } = get();
-				const challenge = getRandomChallenge(category, difficultyFilter, maxTimeFilter);
+				const { difficultyFilter, maxTimeFilter, moodFilter, energyFilter } = get();
+				const challenge = getRandomChallenge(category, difficultyFilter, maxTimeFilter, moodFilter, energyFilter);
 				set({ currentChallenge: challenge, challengeStatus: "idle", currentCategory: category === "random" ? null : category });
 			},
 
 			generateChallenge: () => {
-				const { currentCategory, difficultyFilter, maxTimeFilter } = get();
-				const challenge = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter);
+				const { currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energyFilter } = get();
+				const challenge = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energyFilter);
 				set({ currentChallenge: challenge, challengeStatus: "idle" });
 			},
 
@@ -194,16 +209,16 @@ export const useAppStore = create<AppState>()(
 
 				// Auto-next after confetti
 				setTimeout(() => {
-					const { currentCategory, difficultyFilter, maxTimeFilter } = get();
-					const next = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter);
+					const { currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energyFilter } = get();
+					const next = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energyFilter);
 					set({ currentChallenge: next, challengeStatus: "idle", timeRemaining: 0 });
 				}, 2500);
 			},
 
 			skipChallenge: () => {
 				musicEngine.stop();
-				const { currentCategory, difficultyFilter, maxTimeFilter } = get();
-				const next = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter);
+				const { currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energyFilter } = get();
+				const next = getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energyFilter);
 				set({
 					currentChallenge: next,
 					challengeStatus: "idle",
@@ -226,8 +241,8 @@ export const useAppStore = create<AppState>()(
 
 				set({ history: [entry, ...history] });
 
-				const { difficultyFilter, maxTimeFilter } = get();
-				const next = getRandomChallenge(get().currentCategory, difficultyFilter, maxTimeFilter);
+				const { difficultyFilter, maxTimeFilter, moodFilter, energyFilter } = get();
+				const next = getRandomChallenge(get().currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energyFilter);
 				set({ currentChallenge: next, challengeStatus: "idle" });
 			},
 
@@ -265,19 +280,35 @@ export const useAppStore = create<AppState>()(
 
 			setDifficultyFilter: (diff) => {
 				set({ difficultyFilter: diff });
-				const { currentCategory, maxTimeFilter, currentChallenge } = get();
+				const { currentCategory, maxTimeFilter, moodFilter, energyFilter, currentChallenge } = get();
 				if (currentChallenge) {
-					const next = getRandomChallenge(currentCategory, diff, maxTimeFilter);
+					const next = getRandomChallenge(currentCategory, diff, maxTimeFilter, moodFilter, energyFilter);
 					set({ currentChallenge: next });
 				}
 			},
 
 			setMaxTimeFilter: (minutes) => {
 				set({ maxTimeFilter: minutes });
-				const { currentCategory, difficultyFilter, currentChallenge } = get();
+				const { currentCategory, difficultyFilter, moodFilter, energyFilter, currentChallenge } = get();
 				if (currentChallenge) {
-					const next = getRandomChallenge(currentCategory, difficultyFilter, minutes);
+					const next = getRandomChallenge(currentCategory, difficultyFilter, minutes, moodFilter, energyFilter);
 					set({ currentChallenge: next });
+				}
+			},
+
+			setMoodFilter: (mood) => {
+				set({ moodFilter: mood });
+				const { currentCategory, difficultyFilter, maxTimeFilter, energyFilter, currentChallenge } = get();
+				if (currentChallenge) {
+					set({ currentChallenge: getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter, mood, energyFilter) });
+				}
+			},
+
+			setEnergyFilter: (energy) => {
+				set({ energyFilter: energy });
+				const { currentCategory, difficultyFilter, maxTimeFilter, moodFilter, currentChallenge } = get();
+				if (currentChallenge) {
+					set({ currentChallenge: getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energy) });
 				}
 			},
 

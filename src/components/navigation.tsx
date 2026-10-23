@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { ThemePicker } from "@/components/theme-picker";
 import { Bookmark, Clock, Home, Sparkles } from "lucide-react";
 import { NavLink } from "react-router";
 
@@ -14,7 +15,7 @@ export function Navigation() {
 		<>
 			{/* Desktop / Tablet top nav */}
 			<header className="hidden sm:block sticky top-4 z-50 mx-auto max-w-6xl px-6">
-				<nav className="h-16 flex items-center justify-between px-5 bg-background/80 backdrop-blur-xl border border-border rounded-full shadow-sm overflow-hidden">
+				<nav className="glass relative h-16 flex items-center justify-between px-5 rounded-full overflow-visible">
 					<NavLink
 						to="/"
 						className="flex items-center">
@@ -32,22 +33,24 @@ export function Navigation() {
 								to={link.to}
 								className={({ isActive }) =>
 									cn(
-										"px-4 py-2 text-sm font-medium rounded-full transition-all duration-200",
-										isActive
-											? "bg-primary text-primary-foreground"
-											: "text-muted-foreground hover:text-foreground hover:bg-secondary",
+										"font-display px-4 py-2 text-sm font-medium rounded-full transition-all duration-200",
+									isActive
+										? "bg-primary text-primary-foreground"
+										: "text-muted-foreground hover:text-foreground hover:bg-white/35",
 									)
 								}>
 								{link.label}
 							</NavLink>
 						))}
+						<ThemePicker />
 					</div>
 				</nav>
 			</header>
 
 			{/* Mobile bottom tab bar */}
-			<nav className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-background/90 backdrop-blur-xl border-t border-border safe-area-pb">
+			<nav className="glass-subtle sm:hidden fixed bottom-0 inset-x-0 z-50 border-x-0 border-b-0 safe-area-pb">
 				<div className="flex items-center justify-center h-16 px-2 gap-2">
+					<ThemePicker />
 					{navLinks.map((link) => {
 						const Icon = link.icon;
 						return (
@@ -69,7 +72,7 @@ export function Navigation() {
 											)}
 											strokeWidth={isActive ? 2.5 : 1.8}
 										/>
-										<span className="text-[10px] font-semibold">
+										<span className="font-display text-[10px] font-semibold">
 											{link.label}
 										</span>
 									</>

@@ -5,8 +5,9 @@ import { categoryDescriptions } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/stores/use-app-store";
 import {
-	Bookmark,
-	Clock,
+			Bookmark,
+		Clock,
+		Dices,
 	Flame,
 	Gamepad2,
 	Sparkles,
@@ -30,23 +31,24 @@ export function HomePage() {
 	return (
 		<section className="">
 			{/* ── Hero ── */}
-			<section className="relative py-24">
-				<div className="relative z-10 max-w-2xl mx-auto text-center space-y-6">
+			<section className="relative py-16 sm:py-24">
+				<div className="relative z-10 grid lg:grid-cols-[1.05fr_0.95fr] items-center gap-12 max-w-5xl mx-auto">
+					<div className="space-y-6 text-center lg:text-left">
 					{/* Floating stat badges */}
 					<motion.div
-						className="flex items-center justify-center gap-3 flex-wrap"
+						className="flex items-center justify-center lg:justify-start gap-3 flex-wrap"
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5, delay: 0.1 }}>
-						<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
+						<div className="glass-subtle inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-muted-foreground">
 							<Zap className="size-3.5 text-amber-500" />
 							{completedCount > 0 ? `${completedCount} Done` : "Ready to go"}
 						</div>
-						<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
+						<div className="glass-subtle inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-muted-foreground">
 							<Flame className="size-3.5 text-orange-500" />
 							56 Challenges
 						</div>
-						<div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card/80 backdrop-blur-sm border border-border text-xs font-medium text-muted-foreground shadow-sm">
+						<div className="glass-subtle inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium text-muted-foreground">
 							<Trophy className="size-3.5 text-violet-500" />7 Vibes
 						</div>
 					</motion.div>
@@ -60,16 +62,16 @@ export function HomePage() {
 						<h1 className="text-balance">
 							<span className="block text-[3.5rem] sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[0.85]">
 								<span className="bg-gradient-to-br from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent">
-									I'm bored
+									I'm bored.
 								</span>
-								<span className="text-primary">.</span>
+								<span className="block text-[2.5rem] sm:text-6xl lg:text-7xl text-primary">Let's fix that.</span>
 							</span>
 						</h1>
 					</motion.div>
 
 					{/* Tagline */}
 					<motion.p
-						className="text-sm sm:text-base text-muted-foreground font-medium max-w-sm mx-auto leading-relaxed"
+						className="text-base sm:text-lg text-muted-foreground font-medium max-w-lg mx-auto lg:mx-0 leading-relaxed"
 						initial={{ opacity: 0, y: 16 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{
@@ -77,7 +79,7 @@ export function HomePage() {
 							delay: 0.35,
 							ease: [0.16, 1, 0.3, 1],
 						}}>
-						Give me something fun to do. Right now. No thinking required.
+						A tiny challenge, picked for your mood, energy, and time.
 					</motion.p>
 
 					{/* CTA Button */}
@@ -97,19 +99,70 @@ export function HomePage() {
 								to="/challenges"
 								className="flex items-center gap-2">
 								<Sparkles className="size-5" />
-								Let's go ✨
+								Surprise me
 							</Link>
 						</Button>
 					</motion.div>
 
 					{/* Micro hint */}
 					<motion.p
-						className="text-[11px] text-muted-foreground/60 font-medium"
+						className="hidden"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						transition={{ delay: 0.8, duration: 0.5 }}>
 						No signup · No tracking · Just vibes
 					</motion.p>
+					</div>
+
+					<motion.div
+						className="relative flex min-h-[280px] items-center justify-center"
+						initial={{ opacity: 0, y: 20, rotate: 2 }}
+						animate={{ opacity: 1, y: 0, rotate: 0 }}
+						transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+						aria-label="A playful dice illustration representing a random challenge">
+						<div className="absolute size-64 rounded-full border-2 border-primary/20 rotate-12" aria-hidden="true" />
+						<div className="absolute size-52 rounded-[2.5rem] border border-primary/25 -rotate-6" aria-hidden="true" />
+						<div className="relative flex size-44 rotate-6 items-center justify-center rounded-[2.5rem] bg-primary/10 text-primary shadow-xl shadow-primary/10">
+							<Dices className="size-28" strokeWidth={1.35} aria-hidden="true" />
+							<span className="absolute -right-3 -top-3 flex size-12 -rotate-12 items-center justify-center rounded-full bg-primary text-2xl font-bold text-primary-foreground shadow-lg">?</span>
+						</div>
+					</motion.div>
+
+					<motion.div
+						className="relative"
+						style={{ display: "none" }}
+						initial={{ opacity: 0, y: 20, rotate: 2 }}
+						animate={{ opacity: 1, y: 0, rotate: 0 }}
+						transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}>
+						<div className="absolute -right-5 -top-5 size-24 rounded-full bg-violet-400/25 blur-2xl" aria-hidden="true" />
+						<div className="absolute -bottom-6 -left-6 size-28 rounded-full bg-pink-400/20 blur-2xl" aria-hidden="true" />
+						<div className="glass relative rounded-[2rem] p-6 sm:p-8 shadow-2xl shadow-violet-900/10">
+							<div className="flex items-center justify-between gap-4 mb-8">
+								<div className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-primary">
+									<Sparkles className="size-4" aria-hidden="true" />
+									Your next challenge
+								</div>
+								<span className="size-3 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/40" aria-label="Ready" />
+							</div>
+							<h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground leading-tight">
+								Make a fancy coffee drink
+							</h2>
+							<p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+								Channel your inner barista. Froth, pour, and enjoy something you made yourself.
+							</p>
+							<div className="flex items-center gap-2 flex-wrap mt-6">
+								<span className="rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-bold text-emerald-700">Relaxed</span>
+								<span className="inline-flex items-center gap-1 rounded-full bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground">
+									<Clock className="size-3.5" aria-hidden="true" />10 min
+								</span>
+								<span className="rounded-full bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground">Easy</span>
+							</div>
+							<div className="mt-8 flex items-center justify-between gap-4 border-t border-border/60 pt-5">
+								<span className="text-xs font-medium text-muted-foreground">No pressure. Just vibes.</span>
+								<Link to="/challenges" className="text-sm font-bold text-primary hover:underline underline-offset-4">Explore <span aria-hidden="true">→</span></Link>
+							</div>
+						</div>
+					</motion.div>
 				</div>
 			</section>
 
@@ -131,7 +184,15 @@ export function HomePage() {
 					</p>
 				</motion.div>
 
-				<div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+				<div className="relative grid grid-cols-2 sm:grid-cols-4 gap-4">
+					<div
+						className="absolute left-1/2 top-11 bottom-11 w-0.5 -translate-x-1/2 bg-primary/45 sm:hidden"
+						aria-hidden="true"
+					/>
+					<div
+						className="absolute left-[12.5%] right-[12.5%] top-11 hidden h-0.5 bg-primary/45 sm:block"
+						aria-hidden="true"
+					/>
 					{[
 						{
 							emoji: "🎲",
@@ -160,7 +221,7 @@ export function HomePage() {
 					].map((step, i) => (
 						<motion.div
 							key={step.title}
-							className="p-5 bg-card rounded-2xl border border-border shadow-sm text-center space-y-3"
+							className="glass relative z-10 col-span-2 sm:col-span-1 p-5 rounded-2xl text-center space-y-3 sm:min-h-[190px]"
 							initial={{ opacity: 0, y: 16 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{
@@ -209,7 +270,7 @@ export function HomePage() {
 					</p>
 				</motion.div>
 
-				<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+				<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
 					{[
 						{
 							icon: Gamepad2,
@@ -250,7 +311,10 @@ export function HomePage() {
 					].map((item, i) => (
 						<motion.div
 							key={item.title}
-							className="p-5 bg-card rounded-2xl border border-border shadow-sm hover:-translate-y-0.5 transition-transform"
+							className={cn(
+								"glass p-5 rounded-2xl hover:-translate-y-1 transition-transform",
+								(i === 0 || i === 5) && "lg:col-span-2",
+							)}
 							{...fadeUp(0.2 + i * 0.04)}>
 							<span className="text-2xl block mb-3">{item.emoji}</span>
 							<h3 className="text-sm font-bold text-foreground mb-1">
@@ -278,7 +342,7 @@ export function HomePage() {
 					</p>
 				</motion.div>
 
-				<div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+				<div className="grid grid-cols-2 sm:grid-cols-4 sm:auto-rows-[140px] gap-3">
 					{categories
 						.filter((c) => c.id !== "random")
 						.map((cat, i) => (
@@ -291,8 +355,20 @@ export function HomePage() {
 									delay: 0.3 + i * 0.04,
 									ease: [0.16, 1, 0.3, 1],
 								}}
-								className="flex">
-								<div className="p-4 bg-card rounded-2xl border border-border shadow-sm space-y-2 hover:-translate-y-0.5 transition-transform flex flex-col w-full">
+								className={cn(
+									"flex h-full",
+									i === 0 && "sm:col-span-2 sm:row-span-2",
+									i === 1 && "sm:col-start-3",
+									i === 2 && "sm:col-start-4",
+									i === 3 && "sm:col-start-3 sm:col-span-2 sm:row-start-2 sm:row-span-3",
+									i === 4 && "sm:col-start-1 sm:row-start-3",
+									i === 5 && "sm:col-start-2 sm:row-start-3",
+									i === 6 && "sm:col-start-1 sm:col-span-2 sm:row-start-4",
+								)}>
+								<div
+									className={cn(
+										"glass h-full p-4 rounded-2xl space-y-2 hover:-translate-y-1 transition-transform flex flex-col w-full",
+									)}>
 									<div className="flex items-center gap-2">
 										<cat.icon
 											className={cn("size-5", cat.color)}
@@ -344,7 +420,7 @@ export function HomePage() {
 					].map((item, i) => (
 						<motion.div
 							key={item.title}
-							className="p-6 bg-card rounded-2xl border border-border shadow-sm hover:-translate-y-0.5 transition-transform"
+							className="glass p-6 rounded-2xl hover:-translate-y-1 transition-transform"
 							{...fadeUp(0.3 + i * 0.05)}>
 							<span className="text-2xl block mb-3">{item.emoji}</span>
 							<h3 className="text-sm font-bold text-foreground mb-1">
@@ -392,7 +468,7 @@ export function HomePage() {
 					].map((item, i) => (
 						<motion.div
 							key={item.q}
-							className="p-5 bg-card rounded-2xl border border-border shadow-sm"
+							className="glass p-5 rounded-2xl"
 							{...fadeUp(0.38 + i * 0.04)}>
 							<h4 className="text-sm font-bold text-foreground mb-1">
 								{item.q}

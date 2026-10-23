@@ -3,16 +3,29 @@
 
 
 @font-face {
-  font-family: "BricolageGrotesque";
-  src: url("@/assets/fonts/BricolageGrotesque.ttf") format("truetype");
-  font-weight: 200 800;
+  font-family: "Sora";
+  src: url("@/assets/fonts/Sora.ttf") format("truetype");
+  font-weight: 100 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "DMSans";
+  src: url("@/assets/fonts/DMSans.ttf") format("truetype");
+  font-weight: 100 900;
   font-display: swap;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "BricolageGrotesque", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: "DMSans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-body: "DMSans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Sora", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --text-xs: 0.875rem;
+  --text-xs--line-height: 1.3rem;
+  --text-sm: 1rem;
+  --text-sm--line-height: 1.5rem;
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);
@@ -64,6 +77,50 @@
   --border: #E8E4DF;
   --input: #E8E4DF;
   --ring: #7C5CFC;
+  --theme-gradient: linear-gradient(135deg, #F8F5FF 0%, #EEE9FF 28%, #FFEAF3 58%, #E5F5FF 82%, #F8F5FF 100%);
+}
+
+.theme-sunset {
+  --background: #fff8f3;
+  --foreground: #382a2a;
+  --primary: #f06b5b;
+  --ring: #f06b5b;
+  --theme-gradient: linear-gradient(135deg, #fff4dc 0%, #ffe1d5 35%, #ffd4e4 68%, #fff0d2 100%);
+}
+
+.theme-ocean {
+  --background: #f2fbff;
+  --foreground: #173047;
+  --primary: #1687c7;
+  --ring: #1687c7;
+  --theme-gradient: linear-gradient(135deg, #e5f7ff 0%, #d9edff 35%, #e6e1ff 68%, #e0fbf6 100%);
+}
+
+.theme-forest {
+  --background: #f4fbf5;
+  --foreground: #20352b;
+  --primary: #29956a;
+  --ring: #29956a;
+  --theme-gradient: linear-gradient(135deg, #e9f8e9 0%, #d9f1df 35%, #e0f3ed 68%, #f5f4d9 100%);
+}
+
+.theme-dark {
+  --background: #171525;
+  --foreground: #f6f2ff;
+  --card: #25213a;
+  --card-foreground: #f6f2ff;
+  --popover: #25213a;
+  --popover-foreground: #f6f2ff;
+  --primary: #a78bfa;
+  --primary-foreground: #19152a;
+  --secondary: #302b47;
+  --secondary-foreground: #f6f2ff;
+  --muted: #302b47;
+  --muted-foreground: #c6bfd8;
+  --border: #50486c;
+  --input: #50486c;
+  --ring: #c4b5fd;
+  --theme-gradient: linear-gradient(135deg, #171525 0%, #292142 38%, #3a233d 72%, #172c3d 100%);
 }
 
 @layer base {
@@ -75,9 +132,59 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: "DMSans", ui-sans-serif, system-ui, -apple-system, sans-serif;
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Sora", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  @media (pointer: coarse) {
+    button,
+    a,
+    [role="button"] {
+      min-height: 44px;
+    }
+  }
+}
+
+@layer components {
+  .glass {
+    background: rgb(255 255 255 / 0.48);
+    border: 1px solid rgb(255 255 255 / 0.42);
+    box-shadow:
+      0 12px 35px rgb(80 60 120 / 0.08),
+      inset 0 1px 0 rgb(255 255 255 / 0.34);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .glass-subtle {
+    background: rgb(255 255 255 / 0.34);
+    border: 1px solid rgb(255 255 255 / 0.34);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28);
+    backdrop-filter: blur(14px) saturate(135%);
+    -webkit-backdrop-filter: blur(14px) saturate(135%);
+  }
+
+  .theme-picker-menu {
+    background: color-mix(in srgb, var(--background) 94%, white 6%);
+    border: 1px solid color-mix(in srgb, var(--border) 80%, white 20%);
+    backdrop-filter: blur(10px) saturate(115%);
+    -webkit-backdrop-filter: blur(10px) saturate(115%);
   }
 }
 
@@ -109,6 +216,17 @@ body::before {
 
 .animate-confetti { animation: confetti-burst 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
 .animate-check-pop { animation: check-pop 0.35s cubic-bezier(0.68, -0.55, 0.27, 1.55) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
 /* ── Utility ── */
 .text-balance { text-wrap: balance; }

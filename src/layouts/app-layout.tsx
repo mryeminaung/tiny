@@ -11,7 +11,7 @@ function App() {
 		<div className="relative min-h-dvh">
 			<BackgroundEffects />
 			<Navigation />
-			<main className="relative z-10 flex flex-col flex-1 mx-auto max-w-6xl px-6 pb-10 w-full">
+			<main className="relative z-10 flex flex-col flex-1 mx-auto max-w-6xl px-10 sm:px-16 pb-10 w-full">
 				<motion.div
 					key={location.pathname}
 					className="sm:pt-6 pt-4"

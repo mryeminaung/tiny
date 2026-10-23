@@ -22,8 +22,7 @@ export function BackgroundEffects() {
 		<div
 			className="fixed inset-0 pointer-events-none overflow-hidden z-0"
 			style={{
-				background:
-					"linear-gradient(135deg, #FAF8F5 0%, #EDE9FE 25%, #FCE7F3 50%, #E0F2FE 75%, #FAF8F5 100%)",
+				background: "var(--theme-gradient)",
 			}}
 			aria-hidden="true">
 			{ORBS.map((orb, i) => (
