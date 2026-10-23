@@ -1,90 +1,78 @@
-# 🎲 Tiny
+# Tiny
 
-> **I'm bored. Give me something.**
+<p align="center">
+  <img src="public/logo.png" alt="Tiny logo" width="180" />
+</p>
 
-Tiny is a simple and playful web app that helps people discover something interesting to do when they feel bored or don't know what to do.
+<p align="center">
+  A playful random activity generator for when you are bored and need something fun to do.
+</p>
 
----
+## About
 
-## ✨ Features
+Tiny helps you find a small, interesting challenge without overthinking it. Choose a vibe, set your available time and energy, then get a suggestion you can start immediately.
 
-- 7 activity categories: Create, Code, Think, Friends, Eat, Play, Outside
-- Random challenge generation with difficulty & time filters
-- Difficulty indicator ⭐⭐⭐
-- Estimated time display
-- Challenge favorites — save challenges for later
-- Add notes/reflections after completing a challenge
-- Ambient music player (lo-fi, rain, focus)
-- Active challenge timer with countdown ring
-- Local history with stats (localStorage)
-- Light/dark mode
-- Responsive design
+## Features
 
----
+- 56 challenges across Create, Code, Think, Friends, Eat, Play, and Outside
+- Recommendations by mood, energy, difficulty, and available time
+- Surprise-me challenge discovery flow
+- Favorites and local completion history
+- Daily challenge card
+- Active challenge timer with visual countdown ring
+- Ambient music stations for lo-fi, rain, and focus sounds
+- Notes and reflections after completing challenges
+- Responsive desktop and mobile navigation
+- Glassmorphism UI with Lavender, Sunset, Ocean, Forest, and Dark themes
+- Sora display typography and DM Sans content typography
+- Reduced-motion support, keyboard focus states, ARIA labels, and touch-friendly controls
 
-## 🛠 Tech Stack
+## Tech stack
 
-- React + Vite
+- React
 - TypeScript
+- Vite
 - Tailwind CSS v4
-- shadcn/ui
-- Zustand (state management)
-- Framer Motion (animations)
-- Web Audio API (ambient music)
+- Zustand
+- Motion
+- Lucide React
+- Web Audio API
 - localStorage
 
----
-
-## 🚀 Getting Started
+## Getting started
 
 ```bash
-# Clone
 git clone https://github.com/mryeminaung/tiny.git
-
-# Install
 cd tiny
 pnpm install
-
-# Run
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
----
+## Build for production
 
-## 📁 Project Structure
-
+```bash
+pnpm build
 ```
+
+## Project structure
+
+```text
 src/
-├── components/          # Shared UI components
-│   ├── ui/              # shadcn/ui primitives (Button, Badge, Card, etc.)
-│   ├── navigation.tsx   # Desktop top nav + mobile bottom bar
-│   ├── footer.tsx       # Site footer
-│   ├── confetti.tsx     # CSS confetti explosion
-│   └── background-effects.tsx
-├── features/
-│   └── home/            # Home page feature
-│       └── components/
-│           ├── hero-section.tsx
-│           ├── category-grid.tsx
-│           └── challenge-card.tsx
-├── pages/               # Route-level pages
-│   ├── home-page.tsx
-│   ├── history-page.tsx
-│   └── about-page.tsx
-├── stores/
-│   └── use-app-store.ts # Zustand store (persisted to localStorage)
-├── lib/
-│   ├── challenges.ts    # Challenge data & types
-│   ├── constants.ts     # Category colors, gradients, metadata
-│   ├── music.ts         # Web Audio API music engine
-│   └── utils.ts         # cn() utility (clsx + tailwind-merge)
-├── layouts/
-│   └── app-layout.tsx   # Root layout wrapper
-├── App.tsx              # Router definition
-├── main.tsx             # React entry point
-└── index.css            # Global styles & theme variables
+├── components/              Shared UI and layout components
+│   └── ui/                   Reusable UI primitives
+├── features/                Feature-specific components and pages
+├── pages/                   Route-level pages
+├── stores/                  Zustand application state
+├── lib/                     Challenge data, constants, music, and utilities
+├── layouts/                 Application layout wrappers
+├── assets/fonts/            Local Sora and DM Sans fonts
+├── App.tsx                  Router definition
+├── main.tsx                 React entry point
+└── index.css                Global styles, themes, and accessibility rules
 ```
 
----
+## Design direction
+
+Tiny is designed to feel lightweight, playful, and low-pressure. The interface uses colorful backgrounds, soft glass surfaces, expressive typography, and small moments of motion without turning the experience into a productivity dashboard.
