@@ -66,26 +66,20 @@ export function ChallengeCard() {
 					{showConfetti && <ConfettiExplosion />}
 
 					{/* Card */}
-					<div className="relative bg-card border border-border rounded-3xl overflow-hidden shadow-md">
-						{/* Gradient accent bar */}
-						<div
-							className="h-1 w-full"
-							style={{ background: gradient }}
-						/>
-
-						<div className="p-5 sm:p-6 space-y-4">
+					<div className="glass relative overflow-hidden rounded-[2rem] border border-white/70 shadow-xl shadow-violet-900/10">
+						<div className="space-y-5 p-5 sm:p-7">
 							{/* Badges */}
 							<div className="flex items-center gap-2 flex-wrap">
 								<span
-									className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold text-white backdrop-blur-sm"
+									className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold text-white shadow-sm"
 									style={{ background: gradient }}>
 									{cat?.icon && <cat.icon className="size-3" />}
 									{cat?.label}
 								</span>
-								<span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-muted border border-border text-foreground/80">
+								<span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background/45 px-2.5 py-1 text-xs font-medium text-foreground/75">
 									{diff.emoji} {diff.label}
 								</span>
-								<span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-muted border border-border text-foreground/80">
+								<span className="inline-flex items-center gap-1 rounded-full border border-border/70 bg-background/45 px-2.5 py-1 text-xs font-medium text-foreground/75">
 									<Clock className="size-3" />
 									{currentChallenge.timeEstimate}
 								</span>
@@ -103,7 +97,7 @@ export function ChallengeCard() {
 							</div>
 
 							{/* Title + Description */}
-							<div className="space-y-2">
+							<div className="max-w-3xl space-y-2">
 								<h3 className="text-lg sm:text-xl font-bold text-foreground leading-snug tracking-tight">
 									{currentChallenge.title}
 								</h3>
@@ -113,23 +107,23 @@ export function ChallengeCard() {
 							</div>
 
 							{/* Action buttons */}
-							<div className="flex gap-2.5 pt-1">
+							<div className="grid grid-cols-2 gap-3 pt-1 sm:grid-cols-3">
 								<Button
 									variant="outline"
-									size="lg"
+									size="default"
 									onClick={handleAnother}
 									disabled={isDone}
-									className="flex-1 hover:scale-[1.02] active:scale-[0.97]">
+								className="hover:scale-[1.02] active:scale-[0.97]">
 									<RotateCw className="size-4" />
 									Skip
 								</Button>
 
 								<Button
 									variant="default"
-									size="lg"
+									size="default"
 									onClick={handleComplete}
 									disabled={isDone}
-									className="flex-1 hover:scale-[1.03] active:scale-[0.97]">
+								className="hover:scale-[1.03] active:scale-[0.97]">
 									<Check className="size-4" />
 									{isDone ? "Nice!" : "Did it!"}
 								</Button>
@@ -138,10 +132,10 @@ export function ChallengeCard() {
 							{/* Accept Challenge */}
 							<Button
 								variant="default"
-								size="lg"
+									size="default"
 								onClick={handleAccept}
 								disabled={isDone}
-								className="w-full hover:scale-[1.02] active:scale-[0.97]">
+								className="col-span-2 hover:scale-[1.02] active:scale-[0.97] sm:col-span-1">
 								<Rocket className="size-4" />
 								Accept Challenge
 							</Button>

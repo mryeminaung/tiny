@@ -1,7 +1,7 @@
 # Tiny
 
 <p align="center">
-  <img src="public/logo.png" alt="Tiny logo" width="180" />
+  <img src="public/tiny-banner.png" alt="Tiny banner" width="720" />
 </p>
 
 <p align="center">

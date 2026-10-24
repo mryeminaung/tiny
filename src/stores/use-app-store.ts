@@ -56,6 +56,8 @@ interface AppState {
 	setMaxTimeFilter: (minutes: number | null) => void;
 	setMoodFilter: (mood: Mood | null) => void;
 	setEnergyFilter: (energy: Energy | null) => void;
+	resetFilters: () => void;
+	clearCurrentChallenge: () => void;
 
 	// Actions
 	startChallenge: (challenge: Challenge) => void;
@@ -310,6 +312,19 @@ export const useAppStore = create<AppState>()(
 				if (currentChallenge) {
 					set({ currentChallenge: getRandomChallenge(currentCategory, difficultyFilter, maxTimeFilter, moodFilter, energy) });
 				}
+			},
+
+			resetFilters: () => {
+				set({
+					difficultyFilter: null,
+					maxTimeFilter: null,
+					moodFilter: null,
+					energyFilter: null,
+				});
+			},
+
+			clearCurrentChallenge: () => {
+				set({ currentChallenge: null, challengeStatus: "idle" });
 			},
 
 			clearHistory: () => set({ history: [] }),

@@ -22,7 +22,7 @@ export function Navigation() {
 						<img
 							src="/logo.png"
 							alt="Tiny"
-							className="h-24 w-auto -my-3"
+							className="h-20 w-auto -my-3"
 						/>
 					</NavLink>
 
@@ -48,9 +48,12 @@ export function Navigation() {
 			</header>
 
 			{/* Mobile bottom tab bar */}
-			<nav className="glass-subtle sm:hidden fixed bottom-0 inset-x-0 z-50 border-x-0 border-b-0 safe-area-pb">
-				<div className="flex items-center justify-center h-16 px-2 gap-2">
-					<ThemePicker />
+			<nav className="sm:hidden fixed bottom-3 inset-x-4 z-50 safe-area-pb">
+				<div className="glass-subtle relative rounded-2xl p-2 shadow-xl shadow-violet-900/10">
+					<div className="absolute -top-14 right-1">
+						<ThemePicker menuPosition="up" />
+					</div>
+					<div className="flex items-center justify-between gap-1">
 					{navLinks.map((link) => {
 						const Icon = link.icon;
 						return (
@@ -59,20 +62,22 @@ export function Navigation() {
 								to={link.to}
 								className={({ isActive }) =>
 									cn(
-										"flex flex-col items-center gap-1 px-4 py-1.5 rounded-full transition-all duration-200 min-w-[56px]",
-										isActive ? "text-primary" : "text-muted-foreground",
+										"flex min-h-12 flex-1 items-center justify-center gap-1.5 rounded-xl px-2 py-2 transition-all duration-200",
+										isActive
+											? "bg-primary/12 text-primary"
+											: "text-muted-foreground hover:bg-white/30 hover:text-foreground",
 									)
 								}>
 								{({ isActive }) => (
 									<>
 										<Icon
 											className={cn(
-												"size-5 transition-all duration-200",
+													"size-5 shrink-0 transition-all duration-200",
 												isActive && "scale-110",
 											)}
 											strokeWidth={isActive ? 2.5 : 1.8}
 										/>
-										<span className="font-display text-[10px] font-semibold">
+										<span className={cn("font-display text-[10px] font-semibold", !isActive && "sr-only")}>
 											{link.label}
 										</span>
 									</>
@@ -80,6 +85,7 @@ export function Navigation() {
 							</NavLink>
 						);
 					})}
+					</div>
 				</div>
 			</nav>
 		</>

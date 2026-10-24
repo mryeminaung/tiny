@@ -1,4 +1,7 @@
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 import { motion } from "motion/react";
+import { Link } from "react-router";
 
 export function NotFoundPage() {
 	return (
@@ -9,10 +12,16 @@ export function NotFoundPage() {
 				animate={{ opacity: 1, y: 0 }}
 				transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}>
 				<img
-					src="/not-found.png"
+					src="/tiny-404.png"
 					alt="404 — Page not found"
 					className="w-full max-w-md mx-auto"
 				/>
+				<Button>
+					<Link to="/" className="inline-flex items-center gap-2">
+						<ArrowLeft className="size-4" aria-hidden="true" />
+						Back to home
+					</Link>
+				</Button>
 			</motion.div>
 		</div>
 	);

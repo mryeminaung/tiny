@@ -31,9 +31,10 @@ export function LoginPage() {
 	};
 
 	return (
-		<div className="space-y-5">
+		<div className="space-y-6">
 			<div className="space-y-1">
-				<h1 className="text-xl font-bold text-foreground">
+				<p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">Tiny account</p>
+				<h1 className="font-display text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
 					Welcome back
 				</h1>
 				<p className="text-sm text-muted-foreground">
@@ -41,9 +42,9 @@ export function LoginPage() {
 				</p>
 			</div>
 
-			<form onSubmit={handleSubmit} className="space-y-4">
+			<form onSubmit={handleSubmit} className="space-y-5">
 				{error && (
-					<div className="px-3 py-2 rounded-xl bg-destructive/10 border border-destructive/20 text-xs font-medium text-destructive">
+					<div role="alert" className="rounded-xl border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs font-medium text-destructive">
 						{error}
 					</div>
 				)}
@@ -51,7 +52,7 @@ export function LoginPage() {
 				<div className="space-y-2">
 					<label
 						htmlFor="email"
-						className="text-xs font-semibold text-foreground">
+						className="text-sm font-semibold text-foreground">
 						Email
 					</label>
 					<input
@@ -61,14 +62,14 @@ export function LoginPage() {
 						onChange={(e) => setEmail(e.target.value)}
 						placeholder="you@example.com"
 						required
-						className="w-full px-3 py-2.5 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+						className="min-h-12 w-full rounded-xl border border-border/70 bg-background/45 px-3.5 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/35"
 					/>
 				</div>
 
 				<div className="space-y-2">
 					<label
 						htmlFor="password"
-						className="text-xs font-semibold text-foreground">
+						className="text-sm font-semibold text-foreground">
 						Password
 					</label>
 					<div className="relative">
@@ -79,7 +80,7 @@ export function LoginPage() {
 							onChange={(e) => setPassword(e.target.value)}
 							placeholder="••••••••"
 							required
-							className="w-full px-3 py-2.5 pr-10 rounded-xl bg-muted/50 border border-border text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+							className="min-h-12 w-full rounded-xl border border-border/70 bg-background/45 px-3.5 pr-11 text-sm text-foreground placeholder:text-muted-foreground/60 transition-all focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/35"
 						/>
 						<button
 							type="button"
@@ -97,7 +98,7 @@ export function LoginPage() {
 				<Button
 					type="submit"
 					disabled={loading}
-					className="w-full font-bold shadow-lg hover:scale-[1.02] active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed">
+					className="min-h-12 w-full rounded-xl font-bold shadow-lg hover:scale-[1.02] active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50">
 					{loading ? (
 						<span className="flex items-center gap-2">
 							<span className="size-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />

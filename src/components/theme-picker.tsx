@@ -11,7 +11,7 @@ const themes: { id: Theme; label: string; color: string }[] = [
 	{ id: "dark", label: "Dark glass", color: "#a78bfa" },
 ];
 
-export function ThemePicker() {
+export function ThemePicker({ menuPosition = "down" }: { menuPosition?: "up" | "down" }) {
 	const storedTheme = useAppStore((s) => s.theme) as Theme | "light";
 	const setTheme = useAppStore((s) => s.setTheme);
 	const [open, setOpen] = useState(false);
@@ -39,7 +39,10 @@ export function ThemePicker() {
 				<div
 					role="menu"
 					aria-label="Appearance themes"
-					className="theme-picker-menu absolute right-0 top-13 z-50 w-52 rounded-2xl p-2 shadow-xl">
+					className={cn(
+						"theme-picker-menu absolute right-0 z-50 w-52 rounded-2xl p-2 shadow-xl",
+						menuPosition === "up" ? "bottom-13" : "top-13",
+					)}>
 					<p className="px-3 py-2 text-xs font-semibold text-muted-foreground">
 						Appearance
 					</p>

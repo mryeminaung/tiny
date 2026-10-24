@@ -1,15 +1,18 @@
 import { Button } from "@/components/ui/button";
-import { DailyChallengeCard } from "@/features/daily-challenge";
 import { categories } from "@/lib/challenges";
 import { categoryDescriptions } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { useAppStore } from "@/stores/use-app-store";
 import {
-			Bookmark,
-		Clock,
-		Dices,
+	Bookmark,
+	Clock,
+	Compass,
+	Dices,
 	Flame,
 	Gamepad2,
+	PartyPopper,
+	Play,
+	Shuffle,
 	Sparkles,
 	Timer,
 	Trophy,
@@ -33,10 +36,10 @@ export function HomePage() {
 			{/* ── Hero ── */}
 			<section className="relative py-16 sm:py-24">
 				<div className="relative z-10 grid lg:grid-cols-[1.05fr_0.95fr] items-center gap-12 max-w-5xl mx-auto">
-					<div className="space-y-6 text-center lg:text-left">
+					<div className="space-y-6 text-left">
 					{/* Floating stat badges */}
 					<motion.div
-						className="flex items-center justify-center lg:justify-start gap-3 flex-wrap"
+						className="flex flex-wrap items-center justify-start gap-3"
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.5, delay: 0.1 }}>
@@ -71,7 +74,7 @@ export function HomePage() {
 
 					{/* Tagline */}
 					<motion.p
-						className="text-base sm:text-lg text-muted-foreground font-medium max-w-lg mx-auto lg:mx-0 leading-relaxed"
+						className="mx-0 max-w-lg text-base font-medium leading-relaxed text-muted-foreground sm:text-lg"
 						initial={{ opacity: 0, y: 16 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{
@@ -115,7 +118,7 @@ export function HomePage() {
 					</div>
 
 					<motion.div
-						className="relative flex min-h-[280px] items-center justify-center"
+						className="hidden sm:flex relative min-h-[280px] items-center justify-center"
 						initial={{ opacity: 0, y: 20, rotate: 2 }}
 						animate={{ opacity: 1, y: 0, rotate: 0 }}
 						transition={{ duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
@@ -166,15 +169,10 @@ export function HomePage() {
 				</div>
 			</section>
 
-			{/* ── Challenge of the Day ── */}
-			<section className="mb-20">
-				<DailyChallengeCard />
-			</section>
-
 			{/* ── How it works ── */}
 			<section className="space-y-10 mb-20">
 				<motion.div
-					className="text-center md:text-left space-y-2"
+					className="space-y-2 text-left"
 					{...fadeUp(0.1)}>
 					<h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
 						How it works
@@ -195,25 +193,25 @@ export function HomePage() {
 					/>
 					{[
 						{
-							emoji: "🎲",
+							icon: Compass,
 							title: "Pick your vibe",
 							desc: "Choose a category or let fate decide",
 							color: "from-violet-500 to-purple-500",
 						},
 						{
-							emoji: "⚡",
+							icon: Shuffle,
 							title: "Get a challenge",
 							desc: "Random activity with difficulty & time estimate",
 							color: "from-amber-500 to-orange-500",
 						},
 						{
-							emoji: "🔨",
+							icon: Play,
 							title: "Do the thing",
 							desc: "Set a timer, grab your tools, give it a shot",
 							color: "from-emerald-500 to-teal-500",
 						},
 						{
-							emoji: "🎉",
+							icon: PartyPopper,
 							title: "Celebrate",
 							desc: "Mark it done, watch the confetti, feel good",
 							color: "from-rose-500 to-pink-500",
@@ -242,7 +240,10 @@ export function HomePage() {
 									damping: 20,
 									delay: 0.35 + i * 0.08,
 								}}>
-								<span className="text-xl">{step.emoji}</span>
+								<step.icon className="size-6 text-white" strokeWidth={2.2} />
+								<span className="absolute -right-2 -top-2 flex size-7 items-center justify-center rounded-full bg-background text-sm font-extrabold text-foreground shadow-md ring-2 ring-background/70">
+									{i + 1}
+								</span>
 							</motion.div>
 							<div>
 								<h3 className="text-sm font-bold text-foreground mb-1">
@@ -260,7 +261,7 @@ export function HomePage() {
 			{/* ── Features ── */}
 			<section className="space-y-8 mb-20">
 				<motion.div
-					className="text-center md:text-right space-y-2"
+					className="space-y-2 text-left"
 					{...fadeUp(0.15)}>
 					<h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
 						What you get
@@ -270,7 +271,7 @@ export function HomePage() {
 					</p>
 				</motion.div>
 
-				<div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-fr">
+				<div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-3">
 					{[
 						{
 							icon: Gamepad2,
@@ -308,19 +309,16 @@ export function HomePage() {
 							title: "Add notes",
 							desc: "Jot down reflections after completing a challenge",
 						},
-					].map((item, i) => (
+					].slice(0, 3).map((item, i) => (
 						<motion.div
 							key={item.title}
-							className={cn(
-								"glass p-5 rounded-2xl hover:-translate-y-1 transition-transform",
-								(i === 0 || i === 5) && "lg:col-span-2",
-							)}
+							className="glass flex h-full flex-col rounded-2xl p-5 transition-transform hover:-translate-y-1"
 							{...fadeUp(0.2 + i * 0.04)}>
-							<span className="text-2xl block mb-3">{item.emoji}</span>
-							<h3 className="text-sm font-bold text-foreground mb-1">
+							<item.icon className="mb-4 size-6 text-primary" strokeWidth={1.8} />
+							<h3 className="mb-1 text-sm font-bold text-foreground">
 								{item.title}
 							</h3>
-							<p className="text-xs text-muted-foreground leading-relaxed">
+							<p className="text-xs leading-relaxed text-muted-foreground">
 								{item.desc}
 							</p>
 						</motion.div>
@@ -331,18 +329,17 @@ export function HomePage() {
 			{/* ── Categories preview ── */}
 			<section className="space-y-8 mb-20">
 				<motion.div
-					className="text-center md:text-left space-y-2"
+					className="space-y-2 text-left"
 					{...fadeUp(0.25)}>
 					<h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
 						Pick your vibe
 					</h2>
 					<p className="text-sm text-muted-foreground">
-						{categories.filter((c) => c.id !== "random").length} categories, 56
-						challenges challenges
+						{categories.filter((c) => c.id !== "random").length} vibes · 56 challenges
 					</p>
 				</motion.div>
 
-				<div className="grid grid-cols-2 sm:grid-cols-4 sm:auto-rows-[140px] gap-3">
+				<div className="grid auto-rows-[118px] grid-cols-2 gap-4 sm:grid-rows-[132px_132px_132px_104px]">
 					{categories
 						.filter((c) => c.id !== "random")
 						.map((cat, i) => (
@@ -367,18 +364,16 @@ export function HomePage() {
 								)}>
 								<div
 									className={cn(
-										"glass h-full p-4 rounded-2xl space-y-2 hover:-translate-y-1 transition-transform flex flex-col w-full",
+										"flex h-full w-full flex-col rounded-[1.5rem] border border-white/55 bg-white/20 p-4 shadow-sm backdrop-blur-md transition-all hover:-translate-y-1 hover:bg-white/35 hover:shadow-md",
+										i === 0 && "bg-gradient-to-br from-violet-500/15 via-white/25 to-pink-500/10 p-5 sm:p-6",
 									)}>
-									<div className="flex items-center gap-2">
-										<cat.icon
-											className={cn("size-5", cat.color)}
-											strokeWidth={1.8}
-										/>
-										<span className={cn("text-sm font-bold", cat.color)}>
-											{cat.label}
-										</span>
+									<div className="flex items-center gap-2.5">
+										<div className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-background/55 shadow-sm">
+											<cat.icon className={cn("size-5", cat.color)} strokeWidth={1.8} />
+										</div>
+										<span className={cn("text-sm font-bold", i === 0 && "sm:text-base", cat.color)}>{cat.label}</span>
 									</div>
-									<p className="text-xs text-muted-foreground leading-relaxed">
+									<p className={cn("mt-3 line-clamp-3 text-xs leading-relaxed text-muted-foreground", i === 0 && "sm:text-sm")}>
 										{categoryDescriptions[cat.id]}
 									</p>
 								</div>
@@ -387,57 +382,10 @@ export function HomePage() {
 				</div>
 			</section>
 
-			{/* ── What makes Tiny different? ── */}
-			<section className="space-y-8 mb-20">
-				<motion.div
-					className="text-center md:text-right space-y-2"
-					{...fadeUp(0.28)}>
-					<h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-						What makes Tiny different?
-					</h2>
-					<p className="text-sm text-muted-foreground">
-						No fluff. Just good vibes.
-					</p>
-				</motion.div>
-
-				<div className="grid sm:grid-cols-3 gap-4">
-					{[
-						{
-							emoji: "✨",
-							title: "Zero friction",
-							desc: "No sign-up. No login. No tutorials. Just open and start doing.",
-						},
-						{
-							emoji: "🎯",
-							title: "Just the right amount",
-							desc: "Challenges range from 5 minutes to an hour. Quick wins, not life commitments.",
-						},
-						{
-							emoji: "🫧",
-							title: "Fun-first design",
-							desc: "Everything is designed to feel light, playful, and actually enjoyable to use.",
-						},
-					].map((item, i) => (
-						<motion.div
-							key={item.title}
-							className="glass p-6 rounded-2xl hover:-translate-y-1 transition-transform"
-							{...fadeUp(0.3 + i * 0.05)}>
-							<span className="text-2xl block mb-3">{item.emoji}</span>
-							<h3 className="text-sm font-bold text-foreground mb-1">
-								{item.title}
-							</h3>
-							<p className="text-xs text-muted-foreground leading-relaxed">
-								{item.desc}
-							</p>
-						</motion.div>
-					))}
-				</div>
-			</section>
-
 			{/* ── FAQ ── */}
-			<section className="space-y-6 mb-20">
+			<section className="space-y-6 mb-14">
 				<motion.div
-					className="text-center md:text-left space-y-2"
+					className="space-y-2 text-left"
 					{...fadeUp(0.35)}>
 					<h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
 						Questions you might have
@@ -447,7 +395,7 @@ export function HomePage() {
 					</p>
 				</motion.div>
 
-				<div className="grid sm:grid-cols-2 gap-4">
+				<div className="mx-auto grid w-full max-w-5xl gap-3 md:grid-cols-2">
 					{[
 						{
 							q: "Is Tiny free?",
@@ -468,37 +416,21 @@ export function HomePage() {
 					].map((item, i) => (
 						<motion.div
 							key={item.q}
-							className="glass p-5 rounded-2xl"
+							className="glass h-full rounded-2xl"
 							{...fadeUp(0.38 + i * 0.04)}>
-							<h4 className="text-sm font-bold text-foreground mb-1">
-								{item.q}
-							</h4>
-							<p className="text-xs text-muted-foreground leading-relaxed">
-								{item.a}
-							</p>
+							<details className="group p-5">
+								<summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-bold text-foreground [&::-webkit-details-marker]:hidden">
+									{item.q}
+									<span className="text-lg font-normal text-muted-foreground transition-transform group-open:rotate-45">+</span>
+								</summary>
+								<p className="mt-3 max-w-2xl text-sm text-muted-foreground leading-relaxed">
+									{item.a}
+								</p>
+							</details>
 						</motion.div>
 					))}
 				</div>
 			</section>
-
-			{/* ── CTA ── */}
-			<motion.section
-				className="text-center space-y-5"
-				{...fadeUp(0.42)}>
-				<p className="text-sm text-muted-foreground">
-					So, what are you waiting for?
-				</p>
-				<Button
-					size="lg"
-					className="px-8 text-base font-bold shadow-lg hover:scale-[1.03] active:scale-[0.97]">
-					<Link
-						to="/challenges"
-						className="flex items-center gap-2">
-						<Zap className="size-5" />
-						Try Tiny now
-					</Link>
-				</Button>
-			</motion.section>
 		</section>
 	);
 }
